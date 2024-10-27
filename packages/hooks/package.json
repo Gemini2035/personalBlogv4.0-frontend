@@ -1,0 +1,19 @@
+{
+  "name": "@packages/hooks",
+  "version": "1.0.0",
+  "description": "support for react",
+  "main": "index.js",
+  "author": "Gemini2035",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --external react --outDir ./"
+  },
+  "dependencies": {
+    "axios": "^1.7.7",
+    "jotai": "^2.10.1"
+  },
+  "devDependencies": {
+    "tsup": "^8.3.5"
+  }
+}
