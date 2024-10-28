@@ -1,18 +1,16 @@
 import {
   useState,
 } from 'react'
-import axios, {
-  AxiosResponse,
-} from 'axios'
+import axios from 'axios'
 import { useGlobalData } from '../useGlobal'
-import { UseHttpProps, UseHttpState } from './types'
+import { UseHttpProps, UseHttpState, AxiosResponse } from './types'
 
 export const useHttp = <T,>({
   url,
   method = 'get',
   data,
   headers,
-}: UseHttpProps): UseHttpState<T> => {
+}: UseHttpProps): UseHttpState<T> & { fetchData: () => void } => {
   const { GlobalConfig: { baseUrl } } = useGlobalData()
 
   const [state, setState] = useState<UseHttpState<T>>({
