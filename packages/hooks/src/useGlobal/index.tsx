@@ -1,23 +1,49 @@
-import { createContext, useContext, useMemo, useState } from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { GlobalData, GlobalProviderProps, ProviderValuesType, FC } from "./types";
 import { HelmetContentType, useHelmet } from "../useHelmet";
+import { useHttp } from "../useHttp";
+import { PermissionType } from "../usePermission";
 
 const DEFAULT_GLOBAL_DATA: GlobalData = {
-    baseUrl: ''
+    baseUrl: '',
 }
 
 const GlobalContext = createContext<ProviderValuesType>({
     GlobalConfig: DEFAULT_GLOBAL_DATA,
-    setHelmet: () => {}
+    setHelmet: () => { },
+    reloadGlobal: () => { },
+    permissionList: []
 });
 
 export const GlobalProvider: FC<GlobalProviderProps> = ({ children, initGlobalData }) => {
     const [helmetContent, setHelmetContent] = useState<HelmetContentType>([])
 
+    // TODO: Token Storage
+    const token = 'hahaha'
+
+    const {
+        fetchData: fetchPermission,
+        data: permissionData,
+        // code: permissionResponseCode
+    } = useHttp<PermissionType[]>({
+        url: initGlobalData.baseUrl + '/permission',
+        data: { token }
+    })
+
+    const reloadGlobal = () => {
+        fetchPermission?.()
+    }
+
+    useEffect(() => {
+        fetchPermission?.()
+    }, [token])
+
     const providerValues = useMemo<ProviderValuesType>(() => ({
         GlobalConfig: initGlobalData,
-        setHelmet: setHelmetContent
-    }), [setHelmetContent])
+        setHelmet: setHelmetContent,
+        reloadGlobal,
+        permissionList: permissionData || [],
+    }), [setHelmetContent, permissionData, initGlobalData])
 
     const { BlogHelmet } = useHelmet(helmetContent)
 
@@ -29,6 +55,6 @@ export const GlobalProvider: FC<GlobalProviderProps> = ({ children, initGlobalDa
     )
 };
 
-export const useGlobalData = () => useContext(GlobalContext)
+export const useGlobal = () => useContext(GlobalContext)
 
 export type { GlobalData }
