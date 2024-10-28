@@ -13,7 +13,7 @@ export const useHttp = <T,>({
   data,
   headers,
 }: UseHttpProps): UseHttpState<T> => {
-  const [{ baseUrl }, _] = useGlobalData()
+  const { GlobalConfig: { baseUrl } } = useGlobalData()
 
   const [state, setState] = useState<UseHttpState<T>>({
     loading: false,
