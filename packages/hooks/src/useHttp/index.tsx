@@ -2,25 +2,10 @@ import {
   useState,
 } from 'react'
 import axios, {
-  AxiosRequestConfig,
   AxiosResponse,
 } from 'axios'
 import { useGlobalData } from '../useGlobal'
-
-export interface UseHttpProps {
-  url: string
-  method?: AxiosRequestConfig['method']
-  data?: AxiosRequestConfig['data']
-  headers?: AxiosRequestConfig['headers']
-}
-
-export interface UseHttpState<T> {
-  loading: boolean
-  error: string | null
-  data: T | null
-  code: number | null
-  fetchData?: () => void
-}
+import { UseHttpProps, UseHttpState } from './types'
 
 export const useHttp = <T,>({
   url,
