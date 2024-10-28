@@ -2,7 +2,7 @@ import {
   useState,
 } from 'react'
 import axios from 'axios'
-import { useGlobalData } from '../useGlobal'
+import { useGlobal } from '../useGlobal'
 import { UseHttpProps, UseHttpState, AxiosResponse } from './types'
 
 export const useHttp = <T,>({
@@ -11,7 +11,7 @@ export const useHttp = <T,>({
   data,
   headers,
 }: UseHttpProps): UseHttpState<T> & { fetchData: () => void } => {
-  const { GlobalConfig: { baseUrl } } = useGlobalData()
+  const { GlobalConfig: { baseUrl } } = useGlobal()
 
   const [state, setState] = useState<UseHttpState<T>>({
     loading: false,
