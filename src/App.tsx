@@ -1,4 +1,6 @@
-import { GlobalProvider, GlobalData } from "@packages/hooks";
+import { GlobalProvider, GlobalData, RouteProviderWithRouter } from "@packages/hooks";
+import { routes } from "./routes";
+import { Test } from "./test"; 
 
 const initGlobalData: GlobalData = {
   baseUrl: import.meta.env.VITE_BASE_URL
@@ -7,7 +9,9 @@ const initGlobalData: GlobalData = {
 function App() {
   return (
     <GlobalProvider initGlobalData={initGlobalData}>
-      111
+      <RouteProviderWithRouter routes={routes}>
+        <Test />
+      </RouteProviderWithRouter>
     </GlobalProvider>
   )
 }

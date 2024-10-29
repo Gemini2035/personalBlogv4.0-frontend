@@ -1,8 +1,34 @@
-import { ReactNode, FC, Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, ReactNode, FC } from 'react';
 import { AxiosRequestConfig } from 'axios';
+import * as react_jsx_runtime from 'react/jsx-runtime';
+import { RouteProps } from 'react-router-dom';
+
+type AcceptableHelmetTag = 'meta' | 'title' | 'link';
+type HelmetTagProps = Record<string, string>;
+type HelmetContentType = {
+    type: AcceptableHelmetTag;
+    props: HelmetTagProps;
+}[];
+
+declare const useHelmet: (helmetContent: HelmetContentType) => {
+    BlogHelmet: false | react_jsx_runtime.JSX.Element;
+};
+
+type PermissionType = string;
+
+declare const usePermission: (permissionRequire: PermissionType[]) => {
+    status: boolean;
+    permissionsDeny: string[];
+};
 
 type GlobalData = {
     baseUrl: string;
+};
+type ProviderValuesType = {
+    GlobalConfig: GlobalData;
+    setHelmet: Dispatch<SetStateAction<HelmetContentType>>;
+    permissionList: PermissionType[];
+    reloadGlobal: () => void;
 };
 type GlobalProviderProps = {
     children: ReactNode;
@@ -10,7 +36,7 @@ type GlobalProviderProps = {
 };
 
 declare const GlobalProvider: FC<GlobalProviderProps>;
-declare const useGlobalData: () => [GlobalData, Dispatch<SetStateAction<GlobalData>>];
+declare const useGlobal: () => ProviderValuesType;
 
 interface UseHttpProps {
     url: string;
@@ -23,8 +49,25 @@ interface UseHttpState<T> {
     error: string | null;
     data: T | null;
     code: number | null;
-    fetchData?: () => void;
 }
-declare const useHttp: <T>({ url, method, data, headers, }: UseHttpProps) => UseHttpState<T>;
 
-export { type GlobalData, GlobalProvider, type UseHttpProps, type UseHttpState, useGlobalData, useHttp };
+declare const useHttp: <T>({ url, method, data, headers, }: UseHttpProps) => UseHttpState<T> & {
+    fetchData: () => void;
+};
+
+type RouteItem = Readonly<RouteProps & {
+    permissionReqire?: string[];
+    helmetContents?: HelmetContentType;
+}>;
+type RouteProviderValue = {
+    renderedRoutes: ReactNode;
+};
+type RouteProviderProps = {
+    routes: RouteItem[];
+    children: ReactNode;
+};
+
+declare const RouteProviderWithRouter: FC<RouteProviderProps>;
+declare const useRoute: () => RouteProviderValue;
+
+export { type GlobalData, GlobalProvider, type HelmetContentType, type PermissionType, type RouteItem, RouteProviderWithRouter, useGlobal, useHelmet, useHttp, usePermission, useRoute };

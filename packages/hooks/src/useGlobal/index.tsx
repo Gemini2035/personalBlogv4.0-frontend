@@ -18,9 +18,8 @@ export const GlobalProvider: FC<GlobalProviderProps> = ({ children, initGlobalDa
     const [helmetContent, setHelmetContent] = useState<HelmetContentType>([])
 
     // TODO: Token Storage
-    const token = 'hahaha'
-   
-
+    const token = useMemo(() => 'hahaha', [])
+    
     const {
         permissionData,
         reloadPermission,
