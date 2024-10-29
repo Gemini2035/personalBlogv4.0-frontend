@@ -4,7 +4,7 @@ import { RouteProps } from "react-router-dom"
 export type { FC } from "react"
 
 export type RouteItem = Readonly<RouteProps & {
-    permissionReqire?: string[],
+    permissionRequire?: string[],
     helmetContents?: HelmetContentType,
 }>
 
