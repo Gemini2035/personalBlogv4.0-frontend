@@ -1,14 +1,23 @@
+import { useCallback } from "react"
 import { useGlobal } from "../useGlobal"
 import { PermissionType } from "./types"
 
-export const usePermission = (permissionRequire: PermissionType[]) => {
+export const usePermission = () => {
     const { permissionList } = useGlobal()
 
-    const permissionsDeny = permissionRequire.filter(permission => permissionList.includes(permission))
+    const checkPermission = useCallback((permissionRequire: PermissionType[]) => {
+        const permissionsDeny = permissionRequire.filter(permission => permissionList.includes(permission))
+        return {
+            status: !permissionsDeny.length,
+            permissionsDeny
+        }
+    }, [permissionList])
+
+
     return {
-        status: !permissionsDeny.length,
-        permissionsDeny
+        checkPermission
     }
+
 }
 
 export type { PermissionType }
