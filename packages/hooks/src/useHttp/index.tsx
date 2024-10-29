@@ -50,8 +50,8 @@ export const useHttp = <T,>({
     } catch (error: any) {
       setState({
         loading: false,
-        error: error.response.data.meta.message || error.message,
-        code: error.response.status,
+        error: error?.response?.data?.meta?.message || error?.message || 'unknown error!',
+        code: error?.response?.status || -1,
         data: null,
       })
     }

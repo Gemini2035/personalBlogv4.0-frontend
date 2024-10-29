@@ -1,7 +1,7 @@
 import { GlobalProvider, GlobalData } from "@packages/hooks";
 
 const initGlobalData: GlobalData = {
-  baseUrl: import.meta.env.BASE_URL
+  baseUrl: import.meta.env.VITE_BASE_URL
 }
 
 function App() {
