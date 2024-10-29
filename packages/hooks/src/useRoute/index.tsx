@@ -1,11 +1,14 @@
-import { createContext, ReactNode, useContext, useMemo } from "react";
-import { RouteItem, RouteProviderValue, FC, RouteProviderProps } from "./types";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { createContext, useCallback, useContext, useMemo } from "react";
+import { RouteItem, RouteProviderValue, FC, RouteProviderProps, ReactNode } from "./types";
+import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { usePermission } from "../usePermission";
 
 export type { RouteItem }
 
 const RouteContext = createContext<RouteProviderValue>({
-    renderedRoutes: null
+    renderedRoutes: null,
+    blogNavigate: () => {},
+    currentLocation: {}
 })
 
 export const RouteProviderWithRouter: FC<RouteProviderProps> = (props) => (
@@ -16,13 +19,32 @@ export const RouteProviderWithRouter: FC<RouteProviderProps> = (props) => (
 
 
 const RouteProvider: FC<RouteProviderProps> = ({ routes, children }) => {
-    // const location = useLocation()
-    // const currentLocation = useMemo(() => {
-    //     console.log(location)
-    //     return routes.find(({ id }) => id === location.key)
-    // }, [location.key, location.pathname])
+    const { pathname } = useLocation()
+    const navigate = useNavigate()
+    const { checkPermission } = usePermission()
 
-    // console.log('currentLocation', currentLocation)
+    const findRouteItemByPathName = useCallback((targetPath: string) => {
+        const result = routes.find(({ path }) => new RegExp(`^${path?.replace(/:\w+/g, '(\\w+)')}$`).test(targetPath))
+        if (!result) {
+            navigate({ pathname: 'error' })
+            return {}
+        }
+        return result
+    }, [routes, navigate])
+
+    const blogNavigate = useCallback<RouteProviderValue['blogNavigate']>(({ pathname, ...restPathFields }) => {
+        const targetRouteItem = findRouteItemByPathName(pathname)
+        
+        const { permissionRequire } = targetRouteItem
+        const { status } = checkPermission(permissionRequire || [])
+
+        // TODO: Enhance the error page
+        if (status) navigate({pathname, ...restPathFields})
+        else navigate({ pathname: 'error' })
+        
+    }, [routes, findRouteItemByPathName, navigate])
+
+    const currentLocation = useMemo(() => findRouteItemByPathName(pathname) || {}, [pathname, findRouteItemByPathName])
 
 
     const renderedRoutes = useMemo<ReactNode>(() => (
@@ -32,7 +54,7 @@ const RouteProvider: FC<RouteProviderProps> = ({ routes, children }) => {
     ), [routes])
 
     return (
-        <RouteContext.Provider value={{ renderedRoutes }}>
+        <RouteContext.Provider value={{ renderedRoutes, blogNavigate, currentLocation }}>
             {children}
         </RouteContext.Provider>
     )

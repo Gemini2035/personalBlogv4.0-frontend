@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, ReactNode, FC } from 'react';
 import { AxiosRequestConfig } from 'axios';
 import * as react_jsx_runtime from 'react/jsx-runtime';
-import { RouteProps } from 'react-router-dom';
+import { RouteProps, Path } from 'react-router-dom';
 
 type AcceptableHelmetTag = 'meta' | 'title' | 'link';
 type HelmetTagProps = Record<string, string>;
@@ -16,9 +16,11 @@ declare const useHelmet: (helmetContent: HelmetContentType) => {
 
 type PermissionType = string;
 
-declare const usePermission: (permissionRequire: PermissionType[]) => {
-    status: boolean;
-    permissionsDeny: string[];
+declare const usePermission: () => {
+    checkPermission: (permissionRequire: PermissionType[]) => {
+        status: boolean;
+        permissionsDeny: string[];
+    };
 };
 
 type GlobalData = {
@@ -56,11 +58,15 @@ declare const useHttp: <T>({ url, method, data, headers, }: UseHttpProps) => Use
 };
 
 type RouteItem = Readonly<RouteProps & {
-    permissionReqire?: string[];
+    permissionRequire?: string[];
     helmetContents?: HelmetContentType;
 }>;
 type RouteProviderValue = {
     renderedRoutes: ReactNode;
+    blogNavigate: (args: Partial<Path> & {
+        pathname: Path['pathname'];
+    }) => void;
+    currentLocation: RouteItem;
 };
 type RouteProviderProps = {
     routes: RouteItem[];

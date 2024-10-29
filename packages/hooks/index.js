@@ -149,26 +149,54 @@ var GlobalProvider = ({ children, initGlobalData }) => {
 var useGlobal = () => useContext(GlobalContext);
 
 // src/usePermission/index.tsx
-var usePermission = (permissionRequire) => {
+import { useCallback } from "react";
+var usePermission = () => {
   const { permissionList } = useGlobal();
-  const permissionsDeny = permissionRequire.filter((permission) => permissionList.includes(permission));
+  const checkPermission = useCallback((permissionRequire) => {
+    const permissionsDeny = permissionRequire.filter((permission) => permissionList.includes(permission));
+    return {
+      status: !permissionsDeny.length,
+      permissionsDeny
+    };
+  }, [permissionList]);
   return {
-    status: !permissionsDeny.length,
-    permissionsDeny
+    checkPermission
   };
 };
 
 // src/useRoute/index.tsx
-import { createContext as createContext2, useContext as useContext2, useMemo as useMemo2 } from "react";
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { createContext as createContext2, useCallback as useCallback2, useContext as useContext2, useMemo as useMemo2 } from "react";
+import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { jsx as jsx2 } from "react/jsx-runtime";
 var RouteContext = createContext2({
-  renderedRoutes: null
+  renderedRoutes: null,
+  blogNavigate: () => {
+  },
+  currentLocation: {}
 });
 var RouteProviderWithRouter = (props) => /* @__PURE__ */ jsx2(BrowserRouter, { children: /* @__PURE__ */ jsx2(RouteProvider, { ...props }) });
 var RouteProvider = ({ routes, children }) => {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+  const { checkPermission } = usePermission();
+  const findRouteItemByPathName = useCallback2((targetPath) => {
+    const result = routes.find(({ path }) => new RegExp(`^${path?.replace(/:\w+/g, "(\\w+)")}$`).test(targetPath));
+    if (!result) {
+      navigate({ pathname: "error" });
+      return {};
+    }
+    return result;
+  }, [routes, navigate]);
+  const blogNavigate = useCallback2(({ pathname: pathname2, ...restPathFields }) => {
+    const targetRouteItem = findRouteItemByPathName(pathname2);
+    const { permissionRequire } = targetRouteItem;
+    const { status } = checkPermission(permissionRequire || []);
+    if (status) navigate({ pathname: pathname2, ...restPathFields });
+    else navigate({ pathname: "error" });
+  }, [routes, findRouteItemByPathName, navigate]);
+  const currentLocation = useMemo2(() => findRouteItemByPathName(pathname) || {}, [pathname, findRouteItemByPathName]);
   const renderedRoutes = useMemo2(() => /* @__PURE__ */ jsx2(Routes, { children: routes.map((route, index) => /* @__PURE__ */ jsx2(Route, { errorElement: /* @__PURE__ */ jsx2(Navigate, { to: { pathname: "/error" } }), ...route }, index)) }), [routes]);
-  return /* @__PURE__ */ jsx2(RouteContext.Provider, { value: { renderedRoutes }, children });
+  return /* @__PURE__ */ jsx2(RouteContext.Provider, { value: { renderedRoutes, blogNavigate, currentLocation }, children });
 };
 var useRoute = () => useContext2(RouteContext);
 export {

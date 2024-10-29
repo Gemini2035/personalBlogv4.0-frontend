@@ -1,7 +1,7 @@
 import { ReactNode } from "react"
 import { HelmetContentType } from "../../useHelmet"
-import { RouteProps } from "react-router-dom"
-export type { FC } from "react"
+import { Path, RouteProps } from "react-router-dom"
+export type { FC, ReactNode } from "react"
 
 export type RouteItem = Readonly<RouteProps & {
     permissionRequire?: string[],
@@ -9,7 +9,9 @@ export type RouteItem = Readonly<RouteProps & {
 }>
 
 export type RouteProviderValue = {
-    renderedRoutes: ReactNode
+    renderedRoutes: ReactNode,
+    blogNavigate: (args: Partial<Path> & { pathname: Path['pathname'] }) => void,
+    currentLocation: RouteItem
 }
 
 export type RouteProviderProps = {

@@ -189,28 +189,56 @@ var GlobalProvider = ({ children, initGlobalData }) => {
 var useGlobal = () => (0, import_react4.useContext)(GlobalContext);
 
 // src/usePermission/index.tsx
-var usePermission = (permissionRequire) => {
+var import_react5 = require("react");
+var usePermission = () => {
   const { permissionList } = useGlobal();
-  const permissionsDeny = permissionRequire.filter((permission) => permissionList.includes(permission));
+  const checkPermission = (0, import_react5.useCallback)((permissionRequire) => {
+    const permissionsDeny = permissionRequire.filter((permission) => permissionList.includes(permission));
+    return {
+      status: !permissionsDeny.length,
+      permissionsDeny
+    };
+  }, [permissionList]);
   return {
-    status: !permissionsDeny.length,
-    permissionsDeny
+    checkPermission
   };
 };
 
 // src/useRoute/index.tsx
-var import_react5 = require("react");
+var import_react6 = require("react");
 var import_react_router_dom = require("react-router-dom");
 var import_jsx_runtime3 = require("react/jsx-runtime");
-var RouteContext = (0, import_react5.createContext)({
-  renderedRoutes: null
+var RouteContext = (0, import_react6.createContext)({
+  renderedRoutes: null,
+  blogNavigate: () => {
+  },
+  currentLocation: {}
 });
 var RouteProviderWithRouter = (props) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_react_router_dom.BrowserRouter, { children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(RouteProvider, { ...props }) });
 var RouteProvider = ({ routes, children }) => {
-  const renderedRoutes = (0, import_react5.useMemo)(() => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_react_router_dom.Routes, { children: routes.map((route, index) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_react_router_dom.Route, { errorElement: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_react_router_dom.Navigate, { to: { pathname: "/error" } }), ...route }, index)) }), [routes]);
-  return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(RouteContext.Provider, { value: { renderedRoutes }, children });
+  const { pathname } = (0, import_react_router_dom.useLocation)();
+  const navigate = (0, import_react_router_dom.useNavigate)();
+  const { checkPermission } = usePermission();
+  const findRouteItemByPathName = (0, import_react6.useCallback)((targetPath) => {
+    const result = routes.find(({ path }) => new RegExp(`^${path?.replace(/:\w+/g, "(\\w+)")}$`).test(targetPath));
+    if (!result) {
+      navigate({ pathname: "error" });
+      return {};
+    }
+    return result;
+  }, [routes, navigate]);
+  const blogNavigate = (0, import_react6.useCallback)(({ pathname: pathname2, ...restPathFields }) => {
+    const targetRouteItem = findRouteItemByPathName(pathname2);
+    const { permissionRequire } = targetRouteItem;
+    const { status } = checkPermission(permissionRequire || []);
+    if (status) navigate({ pathname: pathname2, ...restPathFields });
+    else navigate({ pathname: "error" });
+  }, [routes, findRouteItemByPathName, navigate]);
+  const currentLocation = (0, import_react6.useMemo)(() => findRouteItemByPathName(pathname) || {}, [pathname, findRouteItemByPathName]);
+  const renderedRoutes = (0, import_react6.useMemo)(() => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_react_router_dom.Routes, { children: routes.map((route, index) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_react_router_dom.Route, { errorElement: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_react_router_dom.Navigate, { to: { pathname: "/error" } }), ...route }, index)) }), [routes]);
+  return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(RouteContext.Provider, { value: { renderedRoutes, blogNavigate, currentLocation }, children });
 };
-var useRoute = () => (0, import_react5.useContext)(RouteContext);
+var useRoute = () => (0, import_react6.useContext)(RouteContext);
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   GlobalProvider,
