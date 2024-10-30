@@ -193,7 +193,7 @@ var RouteProvider = ({ routes, children }) => {
     const { status } = checkPermission(permissionRequire || []);
     if (status) __navigate({ pathname: pathname2, ...restPathFields });
     else __navigate({ pathname: "error" });
-  }, [routes, findRouteItemByPathName, __navigate]);
+  }, [findRouteItemByPathName, checkPermission, __navigate]);
   const currentLocation = useMemo2(() => findRouteItemByPathName(pathname) || {}, [pathname, findRouteItemByPathName]);
   const renderedRoutes = useMemo2(() => /* @__PURE__ */ jsx2(Routes, { children: routes.map((route, index) => /* @__PURE__ */ jsx2(Route, { errorElement: /* @__PURE__ */ jsx2(Navigate, { to: { pathname: "/error" } }), ...route }, index)) }), [routes]);
   return /* @__PURE__ */ jsx2(RouteContext.Provider, { value: { renderedRoutes, navigate, currentLocation }, children });

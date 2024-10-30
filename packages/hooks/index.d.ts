@@ -61,12 +61,12 @@ type RouteItem = Readonly<RouteProps & {
     permissionRequire?: string[];
     helmetContents?: HelmetContentType;
 }>;
-type RouteProviderValue = {
+type RouteProviderValue<T extends RouteItem = RouteItem> = {
     renderedRoutes: ReactNode;
     navigate: (args: Partial<Path> & {
         pathname: Path['pathname'];
     }) => void;
-    currentLocation: RouteItem;
+    currentLocation: T;
 };
 type RouteProviderProps = {
     routes: RouteItem[];
@@ -74,6 +74,6 @@ type RouteProviderProps = {
 };
 
 declare const RouteProviderWithRouter: FC<RouteProviderProps>;
-declare const useRoute: () => RouteProviderValue;
+declare const useRoute: <CustomRouteItemType extends RouteItem = RouteItem>() => RouteProviderValue<CustomRouteItemType>;
 
 export { type GlobalData, GlobalProvider, type HelmetContentType, type PermissionType, type RouteItem, RouteProviderWithRouter, useGlobal, useHelmet, useHttp, usePermission, useRoute };

@@ -42,7 +42,7 @@ const RouteProvider: FC<RouteProviderProps> = ({ routes, children }) => {
         if (status) __navigate({pathname, ...restPathFields})
         else __navigate({ pathname: 'error' })
         
-    }, [routes, findRouteItemByPathName, __navigate])
+    }, [findRouteItemByPathName, checkPermission, __navigate])
 
     const currentLocation = useMemo(() => findRouteItemByPathName(pathname) || {}, [pathname, findRouteItemByPathName])
 
@@ -60,4 +60,5 @@ const RouteProvider: FC<RouteProviderProps> = ({ routes, children }) => {
     )
 }
 
-export const useRoute = () => useContext(RouteContext)
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const useRoute = <CustomRouteItemType extends RouteItem = RouteItem,>(): RouteProviderValue<CustomRouteItemType> => (useContext(RouteContext) as any)

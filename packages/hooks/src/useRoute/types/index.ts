@@ -8,10 +8,10 @@ export type RouteItem = Readonly<RouteProps & {
     helmetContents?: HelmetContentType,
 }>
 
-export type RouteProviderValue = {
+export type RouteProviderValue<T extends RouteItem = RouteItem> = {
     renderedRoutes: ReactNode,
     navigate: (args: Partial<Path> & { pathname: Path['pathname'] }) => void,
-    currentLocation: RouteItem
+    currentLocation: T
 }
 
 export type RouteProviderProps = {

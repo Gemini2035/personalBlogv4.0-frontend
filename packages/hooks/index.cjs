@@ -233,7 +233,7 @@ var RouteProvider = ({ routes, children }) => {
     const { status } = checkPermission(permissionRequire || []);
     if (status) __navigate({ pathname: pathname2, ...restPathFields });
     else __navigate({ pathname: "error" });
-  }, [routes, findRouteItemByPathName, __navigate]);
+  }, [findRouteItemByPathName, checkPermission, __navigate]);
   const currentLocation = (0, import_react6.useMemo)(() => findRouteItemByPathName(pathname) || {}, [pathname, findRouteItemByPathName]);
   const renderedRoutes = (0, import_react6.useMemo)(() => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_react_router_dom.Routes, { children: routes.map((route, index) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_react_router_dom.Route, { errorElement: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_react_router_dom.Navigate, { to: { pathname: "/error" } }), ...route }, index)) }), [routes]);
   return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(RouteContext.Provider, { value: { renderedRoutes, navigate, currentLocation }, children });

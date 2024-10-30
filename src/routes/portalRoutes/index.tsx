@@ -1,7 +1,7 @@
-import { RouteItem } from "@packages/hooks";
+import { BlogRouteItem } from "../types";
 import { PortalHome } from "../../Pages";
 
-export const portalRoutes: RouteItem[] = [
+export const portalRoutes: BlogRouteItem[] = [
     {
         id: 'portalHome',
         path: '/',

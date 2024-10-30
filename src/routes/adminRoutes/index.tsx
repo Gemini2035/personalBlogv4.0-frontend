@@ -1,7 +1,7 @@
-import { RouteItem } from "@packages/hooks";
 import { AdminHome } from "../../Pages";
+import { BlogRouteItem } from "../types";
 
-export const adminRoutes: RouteItem[] = [
+export const adminRoutes: BlogRouteItem[] = [
     {
         id: 'adminHome',
         path: '/admin',
