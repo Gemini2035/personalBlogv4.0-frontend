@@ -210,33 +210,33 @@ var import_react_router_dom = require("react-router-dom");
 var import_jsx_runtime3 = require("react/jsx-runtime");
 var RouteContext = (0, import_react6.createContext)({
   renderedRoutes: null,
-  blogNavigate: () => {
+  navigate: () => {
   },
   currentLocation: {}
 });
 var RouteProviderWithRouter = (props) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_react_router_dom.BrowserRouter, { children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(RouteProvider, { ...props }) });
 var RouteProvider = ({ routes, children }) => {
   const { pathname } = (0, import_react_router_dom.useLocation)();
-  const navigate = (0, import_react_router_dom.useNavigate)();
+  const __navigate = (0, import_react_router_dom.useNavigate)();
   const { checkPermission } = usePermission();
   const findRouteItemByPathName = (0, import_react6.useCallback)((targetPath) => {
     const result = routes.find(({ path }) => new RegExp(`^${path?.replace(/:\w+/g, "(\\w+)")}$`).test(targetPath));
     if (!result) {
-      navigate({ pathname: "error" });
+      __navigate({ pathname: "error" });
       return {};
     }
     return result;
-  }, [routes, navigate]);
-  const blogNavigate = (0, import_react6.useCallback)(({ pathname: pathname2, ...restPathFields }) => {
+  }, [routes, __navigate]);
+  const navigate = (0, import_react6.useCallback)(({ pathname: pathname2, ...restPathFields }) => {
     const targetRouteItem = findRouteItemByPathName(pathname2);
     const { permissionRequire } = targetRouteItem;
     const { status } = checkPermission(permissionRequire || []);
-    if (status) navigate({ pathname: pathname2, ...restPathFields });
-    else navigate({ pathname: "error" });
-  }, [routes, findRouteItemByPathName, navigate]);
+    if (status) __navigate({ pathname: pathname2, ...restPathFields });
+    else __navigate({ pathname: "error" });
+  }, [routes, findRouteItemByPathName, __navigate]);
   const currentLocation = (0, import_react6.useMemo)(() => findRouteItemByPathName(pathname) || {}, [pathname, findRouteItemByPathName]);
   const renderedRoutes = (0, import_react6.useMemo)(() => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_react_router_dom.Routes, { children: routes.map((route, index) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_react_router_dom.Route, { errorElement: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_react_router_dom.Navigate, { to: { pathname: "/error" } }), ...route }, index)) }), [routes]);
-  return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(RouteContext.Provider, { value: { renderedRoutes, blogNavigate, currentLocation }, children });
+  return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(RouteContext.Provider, { value: { renderedRoutes, navigate, currentLocation }, children });
 };
 var useRoute = () => (0, import_react6.useContext)(RouteContext);
 // Annotate the CommonJS export names for ESM import in node:

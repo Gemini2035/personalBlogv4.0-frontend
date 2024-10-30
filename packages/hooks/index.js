@@ -170,33 +170,33 @@ import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from
 import { jsx as jsx2 } from "react/jsx-runtime";
 var RouteContext = createContext2({
   renderedRoutes: null,
-  blogNavigate: () => {
+  navigate: () => {
   },
   currentLocation: {}
 });
 var RouteProviderWithRouter = (props) => /* @__PURE__ */ jsx2(BrowserRouter, { children: /* @__PURE__ */ jsx2(RouteProvider, { ...props }) });
 var RouteProvider = ({ routes, children }) => {
   const { pathname } = useLocation();
-  const navigate = useNavigate();
+  const __navigate = useNavigate();
   const { checkPermission } = usePermission();
   const findRouteItemByPathName = useCallback2((targetPath) => {
     const result = routes.find(({ path }) => new RegExp(`^${path?.replace(/:\w+/g, "(\\w+)")}$`).test(targetPath));
     if (!result) {
-      navigate({ pathname: "error" });
+      __navigate({ pathname: "error" });
       return {};
     }
     return result;
-  }, [routes, navigate]);
-  const blogNavigate = useCallback2(({ pathname: pathname2, ...restPathFields }) => {
+  }, [routes, __navigate]);
+  const navigate = useCallback2(({ pathname: pathname2, ...restPathFields }) => {
     const targetRouteItem = findRouteItemByPathName(pathname2);
     const { permissionRequire } = targetRouteItem;
     const { status } = checkPermission(permissionRequire || []);
-    if (status) navigate({ pathname: pathname2, ...restPathFields });
-    else navigate({ pathname: "error" });
-  }, [routes, findRouteItemByPathName, navigate]);
+    if (status) __navigate({ pathname: pathname2, ...restPathFields });
+    else __navigate({ pathname: "error" });
+  }, [routes, findRouteItemByPathName, __navigate]);
   const currentLocation = useMemo2(() => findRouteItemByPathName(pathname) || {}, [pathname, findRouteItemByPathName]);
   const renderedRoutes = useMemo2(() => /* @__PURE__ */ jsx2(Routes, { children: routes.map((route, index) => /* @__PURE__ */ jsx2(Route, { errorElement: /* @__PURE__ */ jsx2(Navigate, { to: { pathname: "/error" } }), ...route }, index)) }), [routes]);
-  return /* @__PURE__ */ jsx2(RouteContext.Provider, { value: { renderedRoutes, blogNavigate, currentLocation }, children });
+  return /* @__PURE__ */ jsx2(RouteContext.Provider, { value: { renderedRoutes, navigate, currentLocation }, children });
 };
 var useRoute = () => useContext2(RouteContext);
 export {

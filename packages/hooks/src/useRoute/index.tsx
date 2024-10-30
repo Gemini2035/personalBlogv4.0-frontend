@@ -7,7 +7,7 @@ export type { RouteItem }
 
 const RouteContext = createContext<RouteProviderValue>({
     renderedRoutes: null,
-    blogNavigate: () => {},
+    navigate: () => {},
     currentLocation: {}
 })
 
@@ -20,29 +20,29 @@ export const RouteProviderWithRouter: FC<RouteProviderProps> = (props) => (
 
 const RouteProvider: FC<RouteProviderProps> = ({ routes, children }) => {
     const { pathname } = useLocation()
-    const navigate = useNavigate()
+    const __navigate = useNavigate()
     const { checkPermission } = usePermission()
 
     const findRouteItemByPathName = useCallback((targetPath: string) => {
         const result = routes.find(({ path }) => new RegExp(`^${path?.replace(/:\w+/g, '(\\w+)')}$`).test(targetPath))
         if (!result) {
-            navigate({ pathname: 'error' })
+            __navigate({ pathname: 'error' })
             return {}
         }
         return result
-    }, [routes, navigate])
+    }, [routes, __navigate])
 
-    const blogNavigate = useCallback<RouteProviderValue['blogNavigate']>(({ pathname, ...restPathFields }) => {
+    const navigate = useCallback<RouteProviderValue['navigate']>(({ pathname, ...restPathFields }) => {
         const targetRouteItem = findRouteItemByPathName(pathname)
         
         const { permissionRequire } = targetRouteItem
         const { status } = checkPermission(permissionRequire || [])
 
         // TODO: Enhance the error page
-        if (status) navigate({pathname, ...restPathFields})
-        else navigate({ pathname: 'error' })
+        if (status) __navigate({pathname, ...restPathFields})
+        else __navigate({ pathname: 'error' })
         
-    }, [routes, findRouteItemByPathName, navigate])
+    }, [routes, findRouteItemByPathName, __navigate])
 
     const currentLocation = useMemo(() => findRouteItemByPathName(pathname) || {}, [pathname, findRouteItemByPathName])
 
@@ -54,7 +54,7 @@ const RouteProvider: FC<RouteProviderProps> = ({ routes, children }) => {
     ), [routes])
 
     return (
-        <RouteContext.Provider value={{ renderedRoutes, blogNavigate, currentLocation }}>
+        <RouteContext.Provider value={{ renderedRoutes, navigate, currentLocation }}>
             {children}
         </RouteContext.Provider>
     )

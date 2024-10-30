@@ -10,7 +10,7 @@ export type RouteItem = Readonly<RouteProps & {
 
 export type RouteProviderValue = {
     renderedRoutes: ReactNode,
-    blogNavigate: (args: Partial<Path> & { pathname: Path['pathname'] }) => void,
+    navigate: (args: Partial<Path> & { pathname: Path['pathname'] }) => void,
     currentLocation: RouteItem
 }
 
