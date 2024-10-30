@@ -1,0 +1,19 @@
+{
+  "name": "@packages/ui",
+  "version": "1.0.0",
+  "description": "support for blog",
+  "main": "index.js",
+  "author": "Gemini2035",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --external react --outDir ./"
+  },
+  "dependencies": {
+    "@blueprintjs/core": "^5.13.1",
+    "styled-components": "^6.1.13"
+  },
+  "devDependencies": {
+    "@types/styled-components": "^5.1.34"
+  }
+}
