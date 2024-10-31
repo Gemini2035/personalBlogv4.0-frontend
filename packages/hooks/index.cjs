@@ -212,11 +212,12 @@ var RouteContext = (0, import_react6.createContext)({
   renderedRoutes: null,
   navigate: () => {
   },
-  currentLocation: {}
+  currentLocation: {},
+  getRouteParams: () => ({})
 });
 var RouteProviderWithRouter = (props) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_react_router_dom.BrowserRouter, { children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(RouteProvider, { ...props }) });
 var RouteProvider = ({ routes, children }) => {
-  const { pathname } = (0, import_react_router_dom.useLocation)();
+  const { pathname, state } = (0, import_react_router_dom.useLocation)();
   const __navigate = (0, import_react_router_dom.useNavigate)();
   const { checkPermission } = usePermission();
   const findRouteItemByPathName = (0, import_react6.useCallback)((targetPath) => {
@@ -235,8 +236,14 @@ var RouteProvider = ({ routes, children }) => {
     else __navigate({ pathname: "error" });
   }, [findRouteItemByPathName, checkPermission, __navigate]);
   const currentLocation = (0, import_react6.useMemo)(() => findRouteItemByPathName(pathname) || {}, [pathname, findRouteItemByPathName]);
+  const getRouteParams = (0, import_react6.useCallback)(() => state, []);
   const renderedRoutes = (0, import_react6.useMemo)(() => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_react_router_dom.Routes, { children: routes.map((route, index) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_react_router_dom.Route, { errorElement: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_react_router_dom.Navigate, { to: { pathname: "/error" } }), ...route }, index)) }), [routes]);
-  return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(RouteContext.Provider, { value: { renderedRoutes, navigate, currentLocation }, children });
+  return /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(RouteContext.Provider, { value: {
+    renderedRoutes,
+    navigate,
+    currentLocation,
+    getRouteParams
+  }, children });
 };
 var useRoute = () => (0, import_react6.useContext)(RouteContext);
 // Annotate the CommonJS export names for ESM import in node:

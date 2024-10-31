@@ -67,6 +67,7 @@ type RouteProviderValue<T extends RouteItem = RouteItem> = {
         pathname: Path['pathname'];
     }) => void;
     currentLocation: T;
+    getRouteParams: <T extends object = object>() => T;
 };
 type RouteProviderProps = {
     routes: RouteItem[];

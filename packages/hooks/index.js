@@ -172,11 +172,12 @@ var RouteContext = createContext2({
   renderedRoutes: null,
   navigate: () => {
   },
-  currentLocation: {}
+  currentLocation: {},
+  getRouteParams: () => ({})
 });
 var RouteProviderWithRouter = (props) => /* @__PURE__ */ jsx2(BrowserRouter, { children: /* @__PURE__ */ jsx2(RouteProvider, { ...props }) });
 var RouteProvider = ({ routes, children }) => {
-  const { pathname } = useLocation();
+  const { pathname, state } = useLocation();
   const __navigate = useNavigate();
   const { checkPermission } = usePermission();
   const findRouteItemByPathName = useCallback2((targetPath) => {
@@ -195,8 +196,14 @@ var RouteProvider = ({ routes, children }) => {
     else __navigate({ pathname: "error" });
   }, [findRouteItemByPathName, checkPermission, __navigate]);
   const currentLocation = useMemo2(() => findRouteItemByPathName(pathname) || {}, [pathname, findRouteItemByPathName]);
+  const getRouteParams = useCallback2(() => state, []);
   const renderedRoutes = useMemo2(() => /* @__PURE__ */ jsx2(Routes, { children: routes.map((route, index) => /* @__PURE__ */ jsx2(Route, { errorElement: /* @__PURE__ */ jsx2(Navigate, { to: { pathname: "/error" } }), ...route }, index)) }), [routes]);
-  return /* @__PURE__ */ jsx2(RouteContext.Provider, { value: { renderedRoutes, navigate, currentLocation }, children });
+  return /* @__PURE__ */ jsx2(RouteContext.Provider, { value: {
+    renderedRoutes,
+    navigate,
+    currentLocation,
+    getRouteParams
+  }, children });
 };
 var useRoute = () => useContext2(RouteContext);
 export {

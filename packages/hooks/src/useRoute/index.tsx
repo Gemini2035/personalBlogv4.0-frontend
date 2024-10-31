@@ -7,8 +7,9 @@ export type { RouteItem }
 
 const RouteContext = createContext<RouteProviderValue>({
     renderedRoutes: null,
-    navigate: () => {},
-    currentLocation: {}
+    navigate: () => { },
+    currentLocation: {},
+    getRouteParams: < T extends object = object, >() => ({} as T)
 })
 
 export const RouteProviderWithRouter: FC<RouteProviderProps> = (props) => (
@@ -19,7 +20,7 @@ export const RouteProviderWithRouter: FC<RouteProviderProps> = (props) => (
 
 
 const RouteProvider: FC<RouteProviderProps> = ({ routes, children }) => {
-    const { pathname } = useLocation()
+    const { pathname, state } = useLocation()
     const __navigate = useNavigate()
     const { checkPermission } = usePermission()
 
@@ -34,18 +35,19 @@ const RouteProvider: FC<RouteProviderProps> = ({ routes, children }) => {
 
     const navigate = useCallback<RouteProviderValue['navigate']>(({ pathname, ...restPathFields }) => {
         const targetRouteItem = findRouteItemByPathName(pathname)
-        
+
         const { permissionRequire } = targetRouteItem
         const { status } = checkPermission(permissionRequire || [])
 
         // TODO: Enhance the error page
-        if (status) __navigate({pathname, ...restPathFields})
+        if (status) __navigate({ pathname, ...restPathFields })
         else __navigate({ pathname: 'error' })
-        
+
     }, [findRouteItemByPathName, checkPermission, __navigate])
 
     const currentLocation = useMemo(() => findRouteItemByPathName(pathname) || {}, [pathname, findRouteItemByPathName])
 
+    const getRouteParams = useCallback<RouteProviderValue['getRouteParams']>(() => state, [])
 
     const renderedRoutes = useMemo<ReactNode>(() => (
         <Routes>
@@ -53,12 +55,17 @@ const RouteProvider: FC<RouteProviderProps> = ({ routes, children }) => {
         </Routes>
     ), [routes])
 
+
     return (
-        <RouteContext.Provider value={{ renderedRoutes, navigate, currentLocation }}>
+        <RouteContext.Provider value={{
+            renderedRoutes,
+            navigate,
+            currentLocation,
+            getRouteParams
+        }}>
             {children}
         </RouteContext.Provider>
     )
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useRoute = <CustomRouteItemType extends RouteItem = RouteItem,>(): RouteProviderValue<CustomRouteItemType> => (useContext(RouteContext) as RouteProviderValue<CustomRouteItemType>)

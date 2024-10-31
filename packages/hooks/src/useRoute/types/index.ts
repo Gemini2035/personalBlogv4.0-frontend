@@ -11,7 +11,8 @@ export type RouteItem = Readonly<RouteProps & {
 export type RouteProviderValue<T extends RouteItem = RouteItem> = {
     renderedRoutes: ReactNode,
     navigate: (args: Partial<Path> & { pathname: Path['pathname'] }) => void,
-    currentLocation: T
+    currentLocation: T,
+    getRouteParams: <T extends object = object>() => T
 }
 
 export type RouteProviderProps = {
