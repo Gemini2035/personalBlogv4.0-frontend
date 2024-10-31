@@ -61,4 +61,4 @@ const RouteProvider: FC<RouteProviderProps> = ({ routes, children }) => {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const useRoute = <CustomRouteItemType extends RouteItem = RouteItem,>(): RouteProviderValue<CustomRouteItemType> => (useContext(RouteContext) as any)
+export const useRoute = <CustomRouteItemType extends RouteItem = RouteItem,>(): RouteProviderValue<CustomRouteItemType> => (useContext(RouteContext) as RouteProviderValue<CustomRouteItemType>)
