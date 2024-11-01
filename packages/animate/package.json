@@ -1,0 +1,18 @@
+{
+  "name": "@packages/animate",
+  "version": "1.0.0",
+  "description": "support for blog",
+  "main": "index.js",
+  "author": "Gemini2035",
+  "license": "MIT",
+  "type": "module",
+  "scripts": {
+    "build": "tsup src/index.ts --format esm,cjs --dts --external react --outDir ./"
+  },
+  "dependencies": {
+    "react-transition-group": "^4.4.5"
+  },
+  "devDependencies": {
+    "@types/react-transition-group": "^4.4.11"
+  }
+}

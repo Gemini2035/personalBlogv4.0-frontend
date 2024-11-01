@@ -5,7 +5,7 @@ import { portalRoutes } from "./portalRoutes";
 export type { BlogRouteItem } from './types'
 
 export const routes = [
-    ...portalRoutes.map(item => ({ ...item, frameType: 'portal' })),
+    ...portalRoutes,
     ...adminRoutes.map(item => ({ ...item, frameType: 'admin' })),
     {
         id: 'errorPage',
