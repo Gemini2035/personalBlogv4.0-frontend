@@ -32,11 +32,13 @@ var src_exports = {};
 __export(src_exports, {
   GlobalProvider: () => GlobalProvider,
   RouteProviderWithRouter: () => RouteProviderWithRouter,
+  TranslateProvider: () => TranslateProvider,
   useGlobal: () => useGlobal,
   useHelmet: () => useHelmet,
   useHttp: () => useHttp,
   usePermission: () => usePermission,
-  useRoute: () => useRoute
+  useRoute: () => useRoute,
+  useTranslation: () => import_react_i18next.useTranslation
 });
 module.exports = __toCommonJS(src_exports);
 
@@ -246,13 +248,32 @@ var RouteProvider = ({ routes, children }) => {
   }, children });
 };
 var useRoute = () => (0, import_react6.useContext)(RouteContext);
+
+// src/useTranslate/index.tsx
+var import_react_i18next = require("react-i18next");
+var import_i18next_browser_languagedetector = __toESM(require("i18next-browser-languagedetector"), 1);
+var import_i18next = __toESM(require("i18next"), 1);
+var import_jsx_runtime4 = require("react/jsx-runtime");
+var TranslateProvider = ({ children, resources, lng = "zh" }) => {
+  import_i18next.default.use(import_i18next_browser_languagedetector.default).use(import_react_i18next.initReactI18next).init({
+    resources,
+    lng,
+    fallbackLng: lng,
+    interpolation: {
+      escapeValue: false
+    }
+  });
+  return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_react_i18next.I18nextProvider, { i18n: import_i18next.default, children });
+};
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   GlobalProvider,
   RouteProviderWithRouter,
+  TranslateProvider,
   useGlobal,
   useHelmet,
   useHttp,
   usePermission,
-  useRoute
+  useRoute,
+  useTranslation
 });

@@ -2,6 +2,8 @@ import { Dispatch, SetStateAction, ReactNode, FC } from 'react';
 import { AxiosRequestConfig } from 'axios';
 import * as react_jsx_runtime from 'react/jsx-runtime';
 import { RouteProps, Path } from 'react-router-dom';
+import { InitOptions } from 'i18next';
+export { useTranslation } from 'react-i18next';
 
 type AcceptableHelmetTag = 'meta' | 'title' | 'link';
 type HelmetTagProps = Record<string, string>;
@@ -77,4 +79,13 @@ type RouteProviderProps = {
 declare const RouteProviderWithRouter: FC<RouteProviderProps>;
 declare const useRoute: <CustomRouteItemType extends RouteItem = RouteItem>() => RouteProviderValue<CustomRouteItemType>;
 
-export { type GlobalData, GlobalProvider, type HelmetContentType, type PermissionType, type RouteItem, RouteProviderWithRouter, useGlobal, useHelmet, useHttp, usePermission, useRoute };
+type ResourcesType = InitOptions['resources'];
+type TranslateProviderProps = {
+    children: ReactNode;
+    lng?: InitOptions['lng'];
+    resources?: ResourcesType;
+};
+
+declare const TranslateProvider: FC<TranslateProviderProps>;
+
+export { type GlobalData, GlobalProvider, type HelmetContentType, type PermissionType, type ResourcesType, type RouteItem, RouteProviderWithRouter, TranslateProvider, useGlobal, useHelmet, useHttp, usePermission, useRoute };

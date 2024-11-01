@@ -206,12 +206,31 @@ var RouteProvider = ({ routes, children }) => {
   }, children });
 };
 var useRoute = () => useContext2(RouteContext);
+
+// src/useTranslate/index.tsx
+import { I18nextProvider, initReactI18next, useTranslation } from "react-i18next";
+import LanguageDetector from "i18next-browser-languagedetector";
+import i18n from "i18next";
+import { jsx as jsx3 } from "react/jsx-runtime";
+var TranslateProvider = ({ children, resources, lng = "zh" }) => {
+  i18n.use(LanguageDetector).use(initReactI18next).init({
+    resources,
+    lng,
+    fallbackLng: lng,
+    interpolation: {
+      escapeValue: false
+    }
+  });
+  return /* @__PURE__ */ jsx3(I18nextProvider, { i18n, children });
+};
 export {
   GlobalProvider,
   RouteProviderWithRouter,
+  TranslateProvider,
   useGlobal,
   useHelmet,
   useHttp,
   usePermission,
-  useRoute
+  useRoute,
+  useTranslation
 };
