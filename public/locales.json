@@ -1,0 +1,14 @@
+{
+  "en": {
+    "translation": {
+      "global.welcome": "welcome",
+      "portalHome.title": "portalHome"
+    }
+  },
+  "zh": {
+    "translation": {
+      "global.welcome": "欢迎",
+      "portalHome.title": "bbb"
+    }
+  }
+}

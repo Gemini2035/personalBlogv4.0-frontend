@@ -4,10 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "yarn update:trans && vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "update:trans": "npx tsup ./public/locales/index.ts && node dist/index.cjs && rm -rf dist"
   },
   "dependencies": {
     "react": "^18.3.1",
@@ -15,9 +16,9 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.13.0",
+    "@packages/animate": "*",
     "@packages/hooks": "*",
     "@packages/ui": "*",
-    "@packages/animate": "*",
     "@types/node": "^22.8.1",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
