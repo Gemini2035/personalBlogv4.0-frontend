@@ -4,7 +4,7 @@ import { TransitionProps } from 'react-transition-group/Transition';
 
 type FadeTransition = Partial<Record<TransitionStatus, CSSProperties>>;
 type FadeAnimateProps = {
-    in: TransitionProps['in'];
+    in?: TransitionProps['in'];
     duration?: number;
     children: ReactNode;
     customizedTransition?: FadeTransition;

@@ -26,8 +26,9 @@ module.exports = __toCommonJS(src_exports);
 
 // src/FadeAnimate/index.tsx
 var import_react_transition_group = require("react-transition-group");
+var import_react = require("react");
 var import_jsx_runtime = require("react/jsx-runtime");
-var DEFUALT_DURATION = 300;
+var DEFUALT_DURATION = 600;
 var DEFUALT_STYLE = {
   transition: `opacity ${DEFUALT_DURATION}ms ease-in-out`,
   opacity: 0
@@ -38,11 +39,18 @@ var DEFUALT_TRANSITION = {
   exiting: { opacity: 0 },
   exited: { opacity: 0 }
 };
-var FadeAnimate = ({ in: inProp, customizedTransition, duration, children }) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(import_react_transition_group.Transition, { in: inProp, timeout: duration || DEFUALT_DURATION, unmountOnExit: true, children: (state) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: {
-  ...DEFUALT_STYLE,
-  ...DEFUALT_TRANSITION[state],
-  ...customizedTransition?.[state] || {}
-}, children }) });
+var FadeAnimate = ({ in: defalultIn, customizedTransition, duration, children }) => {
+  const nodeRef = (0, import_react.useRef)(null);
+  const [inProp, setInProp] = (0, import_react.useState)(defalultIn);
+  (0, import_react.useEffect)(() => {
+    if (inProp === void 0) setInProp(true);
+  }, []);
+  return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(import_react_transition_group.Transition, { nodeRef, in: inProp, timeout: duration || DEFUALT_DURATION, unmountOnExit: true, children: (state) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)("div", { style: {
+    ...DEFUALT_STYLE,
+    ...DEFUALT_TRANSITION[state],
+    ...customizedTransition?.[state] || {}
+  }, children }) });
+};
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   FadeAnimate

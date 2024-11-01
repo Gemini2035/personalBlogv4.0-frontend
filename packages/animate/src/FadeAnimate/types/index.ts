@@ -6,7 +6,7 @@ export type { FC, CSSProperties } from "react"
 export type FadeTransition = Partial<Record<TransitionStatus, CSSProperties>>
 
 export type FadeAnimateProps = {
-  in: TransitionProps['in']
+  in?: TransitionProps['in']
   duration?: number
   children: ReactNode 
   customizedTransition?: FadeTransition

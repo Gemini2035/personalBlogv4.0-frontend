@@ -1,7 +1,8 @@
 // src/FadeAnimate/index.tsx
 import { Transition } from "react-transition-group";
+import { useEffect, useRef, useState } from "react";
 import { jsx } from "react/jsx-runtime";
-var DEFUALT_DURATION = 300;
+var DEFUALT_DURATION = 600;
 var DEFUALT_STYLE = {
   transition: `opacity ${DEFUALT_DURATION}ms ease-in-out`,
   opacity: 0
@@ -12,11 +13,18 @@ var DEFUALT_TRANSITION = {
   exiting: { opacity: 0 },
   exited: { opacity: 0 }
 };
-var FadeAnimate = ({ in: inProp, customizedTransition, duration, children }) => /* @__PURE__ */ jsx(Transition, { in: inProp, timeout: duration || DEFUALT_DURATION, unmountOnExit: true, children: (state) => /* @__PURE__ */ jsx("div", { style: {
-  ...DEFUALT_STYLE,
-  ...DEFUALT_TRANSITION[state],
-  ...customizedTransition?.[state] || {}
-}, children }) });
+var FadeAnimate = ({ in: defalultIn, customizedTransition, duration, children }) => {
+  const nodeRef = useRef(null);
+  const [inProp, setInProp] = useState(defalultIn);
+  useEffect(() => {
+    if (inProp === void 0) setInProp(true);
+  }, []);
+  return /* @__PURE__ */ jsx(Transition, { nodeRef, in: inProp, timeout: duration || DEFUALT_DURATION, unmountOnExit: true, children: (state) => /* @__PURE__ */ jsx("div", { style: {
+    ...DEFUALT_STYLE,
+    ...DEFUALT_TRANSITION[state],
+    ...customizedTransition?.[state] || {}
+  }, children }) });
+};
 export {
   FadeAnimate
 };
