@@ -59,6 +59,23 @@ import {
   useState as useState2
 } from "react";
 import axios from "axios";
+
+// src/useHttp/utils/index.ts
+var generateSecureHeader = (data) => {
+  const {
+    userAgent,
+    languages,
+    platform
+  } = navigator;
+  return encodeURIComponent(JSON.stringify({
+    userAgent,
+    languages,
+    platform,
+    ...data
+  }));
+};
+
+// src/useHttp/index.tsx
 var useHttp = ({
   url,
   method = "get",
@@ -89,7 +106,8 @@ var useHttp = ({
           data
         },
         headers: {
-          ...headers
+          ...headers,
+          [Math.floor((/* @__PURE__ */ new Date()).setSeconds(0, 0) / 1e3)]: generateSecureHeader(data)
         }
       });
       setState({

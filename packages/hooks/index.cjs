@@ -102,6 +102,23 @@ var useGlobal = () => (0, import_react2.useContext)(GlobalContext);
 // src/useHttp/index.tsx
 var import_react3 = require("react");
 var import_axios = __toESM(require("axios"), 1);
+
+// src/useHttp/utils/index.ts
+var generateSecureHeader = (data) => {
+  const {
+    userAgent,
+    languages,
+    platform
+  } = navigator;
+  return encodeURIComponent(JSON.stringify({
+    userAgent,
+    languages,
+    platform,
+    ...data
+  }));
+};
+
+// src/useHttp/index.tsx
 var useHttp = ({
   url,
   method = "get",
@@ -132,7 +149,8 @@ var useHttp = ({
           data
         },
         headers: {
-          ...headers
+          ...headers,
+          [Math.floor((/* @__PURE__ */ new Date()).setSeconds(0, 0) / 1e3)]: generateSecureHeader(data)
         }
       });
       setState({

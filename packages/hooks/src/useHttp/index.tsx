@@ -4,6 +4,7 @@ import {
 import axios from 'axios'
 import { useGlobal } from '../useGlobal'
 import { UseHttpProps, UseHttpState, AxiosResponse } from './types'
+import { generateSecureHeader } from './utils'
 
 export const useHttp = <T,>({
   url,
@@ -38,7 +39,7 @@ export const useHttp = <T,>({
         }),
         headers: {
           ...headers,
-
+          [Math.floor(new Date().setSeconds(0, 0) / 1000)]: generateSecureHeader(data) 
         },
       })
       setState({
