@@ -1,5 +1,5 @@
 // src/useGlobal/index.tsx
-import { createContext, useContext, useMemo, useState as useState2 } from "react";
+import { createContext, useContext, useMemo, useState } from "react";
 
 // src/useHelmet/index.tsx
 import { Helmet } from "react-helmet";
@@ -30,12 +30,33 @@ var useHelmet = (helmetContent) => ({
   BlogHelmet: !!helmetContent?.length && /* @__PURE__ */ jsx(Helmet, { children: helmetContent.map(({ type, props }) => renderHelmetItem(type, props)) })
 });
 
-// src/useGlobal/hooks/usePermissionHook.tsx
-import { useEffect } from "react";
+// src/useGlobal/index.tsx
+import { jsxs } from "react/jsx-runtime";
+var DEFAULT_GLOBAL_DATA = {
+  baseUrl: ""
+};
+var GlobalContext = createContext({
+  GlobalConfig: DEFAULT_GLOBAL_DATA,
+  setHelmet: () => {
+  }
+});
+var GlobalProvider = ({ children, initGlobalData }) => {
+  const [helmetContent, setHelmetContent] = useState([]);
+  const { BlogHelmet } = useHelmet(helmetContent);
+  const providerValues = useMemo(() => ({
+    GlobalConfig: initGlobalData,
+    setHelmet: setHelmetContent
+  }), [setHelmetContent, initGlobalData]);
+  return /* @__PURE__ */ jsxs(GlobalContext.Provider, { value: providerValues, children: [
+    BlogHelmet,
+    children
+  ] });
+};
+var useGlobal = () => useContext(GlobalContext);
 
 // src/useHttp/index.tsx
 import {
-  useState
+  useState as useState2
 } from "react";
 import axios from "axios";
 var useHttp = ({
@@ -45,7 +66,7 @@ var useHttp = ({
   headers
 }) => {
   const { GlobalConfig: { baseUrl } } = useGlobal();
-  const [state, setState] = useState({
+  const [state, setState] = useState2({
     loading: false,
     error: null,
     data: null,
@@ -92,94 +113,58 @@ var useHttp = ({
   };
 };
 
-// src/useGlobal/hooks/usePermissionHook.tsx
-var usePermissionHook = (token, baseUrl) => {
+// src/usePermission/index.tsx
+import { createContext as createContext2, useCallback, useContext as useContext2, useEffect } from "react";
+import { jsx as jsx2 } from "react/jsx-runtime";
+var PermissionContext = createContext2({
+  hasPermission: () => ({ status: false, permissionsDeny: [] }),
+  permissionList: [],
+  reloadPermission: () => {
+  }
+});
+var PermissionProvider = ({ token, children }) => {
   const {
     fetchData: fetchPermission,
     data: permissionData
     // code: permissionResponseCode
   } = useHttp({
-    url: baseUrl + "/permission",
+    url: "/permission",
     data: { token }
   });
   useEffect(() => {
     fetchPermission();
   }, [token]);
-  return {
-    permissionData,
-    reloadPermission: fetchPermission
-  };
-};
-
-// src/useGlobal/index.tsx
-import { jsxs } from "react/jsx-runtime";
-var DEFAULT_GLOBAL_DATA = {
-  baseUrl: ""
-};
-var GlobalContext = createContext({
-  GlobalConfig: DEFAULT_GLOBAL_DATA,
-  setHelmet: () => {
-  },
-  reloadGlobal: () => {
-  },
-  permissionList: []
-});
-var GlobalProvider = ({ children, initGlobalData }) => {
-  const [helmetContent, setHelmetContent] = useState2([]);
-  const token = useMemo(() => "hahaha", []);
-  const {
-    permissionData,
-    reloadPermission
-  } = usePermissionHook(token, initGlobalData.baseUrl);
-  const { BlogHelmet } = useHelmet(helmetContent);
-  const reloadGlobal = () => {
-    reloadPermission();
-  };
-  const providerValues = useMemo(() => ({
-    GlobalConfig: initGlobalData,
-    setHelmet: setHelmetContent,
-    reloadGlobal,
-    permissionList: permissionData || []
-  }), [setHelmetContent, permissionData, initGlobalData]);
-  return /* @__PURE__ */ jsxs(GlobalContext.Provider, { value: providerValues, children: [
-    BlogHelmet,
-    children
-  ] });
-};
-var useGlobal = () => useContext(GlobalContext);
-
-// src/usePermission/index.tsx
-import { useCallback } from "react";
-var usePermission = () => {
-  const { permissionList } = useGlobal();
-  const checkPermission = useCallback((permissionRequire) => {
-    const permissionsDeny = permissionRequire.filter((permission) => permissionList.includes(permission));
+  const hasPermission = useCallback((permissionRequire = []) => {
+    const permissionsDeny = permissionRequire.filter((permission) => permissionData?.includes(permission)) || [];
     return {
-      status: !permissionsDeny.length,
+      status: !permissionsDeny,
       permissionsDeny
     };
-  }, [permissionList]);
-  return {
-    checkPermission
-  };
+  }, [permissionData]);
+  return /* @__PURE__ */ jsx2(PermissionContext.Provider, { value: {
+    permissionList: permissionData || [],
+    hasPermission,
+    reloadPermission: fetchPermission
+  }, children });
 };
+var usePermission = () => useContext2(PermissionContext);
 
 // src/useRoute/index.tsx
-import { createContext as createContext2, useCallback as useCallback2, useContext as useContext2, useMemo as useMemo2 } from "react";
+import { createContext as createContext3, useCallback as useCallback2, useContext as useContext3, useMemo as useMemo2 } from "react";
 import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import { jsx as jsx2 } from "react/jsx-runtime";
-var RouteContext = createContext2({
+import { jsx as jsx3 } from "react/jsx-runtime";
+var RouteContext = createContext3({
   renderedRoutes: null,
   navigate: () => {
   },
   currentLocation: {},
   getRouteParams: () => ({})
 });
-var RouteProvider = (props) => /* @__PURE__ */ jsx2(BrowserRouter, { children: /* @__PURE__ */ jsx2(RouteProviderCore, { ...props }) });
+var RouteProvider = (props) => /* @__PURE__ */ jsx3(BrowserRouter, { children: /* @__PURE__ */ jsx3(RouteProviderCore, { ...props }) });
 var RouteProviderCore = ({ routes, children }) => {
   const { pathname, state } = useLocation();
   const __navigate = useNavigate();
-  const { checkPermission } = usePermission();
+  const { hasPermission } = usePermission();
   const findRouteItemByPathName = useCallback2((targetPath) => {
     const result = routes.find(({ path }) => new RegExp(`^${path?.replace(/:\w+/g, "(\\w+)")}$`).test(targetPath));
     if (!result) {
@@ -191,27 +176,27 @@ var RouteProviderCore = ({ routes, children }) => {
   const navigate = useCallback2(({ pathname: pathname2, ...restPathFields }) => {
     const targetRouteItem = findRouteItemByPathName(pathname2);
     const { permissionRequire } = targetRouteItem;
-    const { status } = checkPermission(permissionRequire || []);
+    const { status } = hasPermission(permissionRequire);
     if (status) __navigate({ pathname: pathname2, ...restPathFields });
     else __navigate({ pathname: "error" });
-  }, [findRouteItemByPathName, checkPermission, __navigate]);
+  }, [findRouteItemByPathName, hasPermission, __navigate]);
   const currentLocation = useMemo2(() => findRouteItemByPathName(pathname) || {}, [pathname, findRouteItemByPathName]);
   const getRouteParams = useCallback2(() => state, []);
-  const renderedRoutes = useMemo2(() => /* @__PURE__ */ jsx2(Routes, { children: routes.map((route, index) => /* @__PURE__ */ jsx2(Route, { errorElement: /* @__PURE__ */ jsx2(Navigate, { to: { pathname: "/error" } }), ...route }, index)) }), [routes]);
-  return /* @__PURE__ */ jsx2(RouteContext.Provider, { value: {
+  const renderedRoutes = useMemo2(() => /* @__PURE__ */ jsx3(Routes, { children: routes.map((route, index) => /* @__PURE__ */ jsx3(Route, { errorElement: /* @__PURE__ */ jsx3(Navigate, { to: { pathname: "/error" } }), ...route }, index)) }), [routes]);
+  return /* @__PURE__ */ jsx3(RouteContext.Provider, { value: {
     renderedRoutes,
     navigate,
     currentLocation,
     getRouteParams
   }, children });
 };
-var useRoute = () => useContext2(RouteContext);
+var useRoute = () => useContext3(RouteContext);
 
 // src/useTranslate/index.tsx
 import { I18nextProvider, initReactI18next, useTranslation } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import i18n from "i18next";
-import { jsx as jsx3 } from "react/jsx-runtime";
+import { jsx as jsx4 } from "react/jsx-runtime";
 var TranslateProvider = ({ children, resources, lng = "zh" }) => {
   i18n.use(LanguageDetector).use(initReactI18next).init({
     resources,
@@ -221,10 +206,11 @@ var TranslateProvider = ({ children, resources, lng = "zh" }) => {
       escapeValue: false
     }
   });
-  return /* @__PURE__ */ jsx3(I18nextProvider, { i18n, children });
+  return /* @__PURE__ */ jsx4(I18nextProvider, { i18n, children });
 };
 export {
   GlobalProvider,
+  PermissionProvider,
   RouteProvider,
   TranslateProvider,
   useGlobal,

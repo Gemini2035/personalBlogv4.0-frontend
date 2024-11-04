@@ -16,23 +16,12 @@ declare const useHelmet: (helmetContent: HelmetContentType) => {
     BlogHelmet: false | react_jsx_runtime.JSX.Element;
 };
 
-type PermissionType = string;
-
-declare const usePermission: () => {
-    checkPermission: (permissionRequire: PermissionType[]) => {
-        status: boolean;
-        permissionsDeny: string[];
-    };
-};
-
 type GlobalData = {
     baseUrl: string;
 };
 type ProviderValuesType = {
     GlobalConfig: GlobalData;
     setHelmet: Dispatch<SetStateAction<HelmetContentType>>;
-    permissionList: PermissionType[];
-    reloadGlobal: () => void;
 };
 type GlobalProviderProps = {
     children: ReactNode;
@@ -58,6 +47,23 @@ interface UseHttpState<T> {
 declare const useHttp: <T>({ url, method, data, headers, }: UseHttpProps) => UseHttpState<T> & {
     fetchData: () => void;
 };
+
+type PermissionType = string;
+type PermissionProviderValue = {
+    reloadPermission: () => void;
+    permissionList: PermissionType[];
+    hasPermission: (tar?: PermissionType[]) => {
+        status: boolean;
+        permissionsDeny: PermissionType[];
+    };
+};
+type PermissionProviderProps = {
+    token: string;
+    children: ReactNode;
+};
+
+declare const PermissionProvider: FC<PermissionProviderProps>;
+declare const usePermission: () => PermissionProviderValue;
 
 type RouteItem = Readonly<RouteProps & {
     permissionRequire?: string[];
@@ -88,4 +94,4 @@ type TranslateProviderProps = {
 
 declare const TranslateProvider: FC<TranslateProviderProps>;
 
-export { type GlobalData, GlobalProvider, type HelmetContentType, type PermissionType, type ResourcesType, type RouteItem, RouteProvider, TranslateProvider, useGlobal, useHelmet, useHttp, usePermission, useRoute };
+export { type GlobalData, GlobalProvider, type HelmetContentType, PermissionProvider, type PermissionType, type ResourcesType, type RouteItem, RouteProvider, TranslateProvider, useGlobal, useHelmet, useHttp, usePermission, useRoute };

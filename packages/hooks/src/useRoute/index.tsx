@@ -22,7 +22,7 @@ export const RouteProvider: FC<RouteProviderProps> = (props) => (
 const RouteProviderCore: FC<RouteProviderProps> = ({ routes, children }) => {
     const { pathname, state } = useLocation()
     const __navigate = useNavigate()
-    const { checkPermission } = usePermission()
+    const { hasPermission } = usePermission()
 
     const findRouteItemByPathName = useCallback((targetPath: string) => {
         const result = routes.find(({ path }) => new RegExp(`^${path?.replace(/:\w+/g, '(\\w+)')}$`).test(targetPath))
@@ -37,13 +37,13 @@ const RouteProviderCore: FC<RouteProviderProps> = ({ routes, children }) => {
         const targetRouteItem = findRouteItemByPathName(pathname)
 
         const { permissionRequire } = targetRouteItem
-        const { status } = checkPermission(permissionRequire || [])
+        const { status } = hasPermission(permissionRequire)
 
         // TODO: Enhance the error page
         if (status) __navigate({ pathname, ...restPathFields })
         else __navigate({ pathname: 'error' })
 
-    }, [findRouteItemByPathName, checkPermission, __navigate])
+    }, [findRouteItemByPathName, hasPermission, __navigate])
 
     const currentLocation = useMemo(() => findRouteItemByPathName(pathname) || {}, [pathname, findRouteItemByPathName])
 
