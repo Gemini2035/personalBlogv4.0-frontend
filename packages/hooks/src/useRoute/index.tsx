@@ -12,14 +12,14 @@ const RouteContext = createContext<RouteProviderValue>({
     getRouteParams: < T extends object = object, >() => ({} as T)
 })
 
-export const RouteProviderWithRouter: FC<RouteProviderProps> = (props) => (
+export const RouteProvider: FC<RouteProviderProps> = (props) => (
     <BrowserRouter>
-        <RouteProvider {...props} />
+        <RouteProviderCore {...props} />
     </BrowserRouter>
 )
 
 
-const RouteProvider: FC<RouteProviderProps> = ({ routes, children }) => {
+const RouteProviderCore: FC<RouteProviderProps> = ({ routes, children }) => {
     const { pathname, state } = useLocation()
     const __navigate = useNavigate()
     const { checkPermission } = usePermission()

@@ -1,4 +1,4 @@
-import { GlobalProvider, GlobalData, RouteProviderWithRouter, TranslateProvider } from "@packages/hooks";
+import { GlobalProvider, GlobalData, RouteProvider, TranslateProvider } from "@packages/hooks";
 import { routes } from "./routes";
 import { BlogFrame } from "./components";
 import resources from '../public/locales.json'
@@ -12,9 +12,9 @@ function App() {
   return (
     <GlobalProvider initGlobalData={initGlobalData}>
       <TranslateProvider resources={resources}>
-        <RouteProviderWithRouter routes={routes}>
+        <RouteProvider routes={routes}>
           <BlogFrame />
-        </RouteProviderWithRouter>
+        </RouteProvider>
       </TranslateProvider>
     </GlobalProvider>
   )

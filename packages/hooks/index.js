@@ -175,8 +175,8 @@ var RouteContext = createContext2({
   currentLocation: {},
   getRouteParams: () => ({})
 });
-var RouteProviderWithRouter = (props) => /* @__PURE__ */ jsx2(BrowserRouter, { children: /* @__PURE__ */ jsx2(RouteProvider, { ...props }) });
-var RouteProvider = ({ routes, children }) => {
+var RouteProvider = (props) => /* @__PURE__ */ jsx2(BrowserRouter, { children: /* @__PURE__ */ jsx2(RouteProviderCore, { ...props }) });
+var RouteProviderCore = ({ routes, children }) => {
   const { pathname, state } = useLocation();
   const __navigate = useNavigate();
   const { checkPermission } = usePermission();
@@ -225,7 +225,7 @@ var TranslateProvider = ({ children, resources, lng = "zh" }) => {
 };
 export {
   GlobalProvider,
-  RouteProviderWithRouter,
+  RouteProvider,
   TranslateProvider,
   useGlobal,
   useHelmet,

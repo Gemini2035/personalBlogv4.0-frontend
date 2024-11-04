@@ -31,7 +31,7 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 var src_exports = {};
 __export(src_exports, {
   GlobalProvider: () => GlobalProvider,
-  RouteProviderWithRouter: () => RouteProviderWithRouter,
+  RouteProvider: () => RouteProvider,
   TranslateProvider: () => TranslateProvider,
   useGlobal: () => useGlobal,
   useHelmet: () => useHelmet,
@@ -217,8 +217,8 @@ var RouteContext = (0, import_react6.createContext)({
   currentLocation: {},
   getRouteParams: () => ({})
 });
-var RouteProviderWithRouter = (props) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_react_router_dom.BrowserRouter, { children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(RouteProvider, { ...props }) });
-var RouteProvider = ({ routes, children }) => {
+var RouteProvider = (props) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_react_router_dom.BrowserRouter, { children: /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(RouteProviderCore, { ...props }) });
+var RouteProviderCore = ({ routes, children }) => {
   const { pathname, state } = (0, import_react_router_dom.useLocation)();
   const __navigate = (0, import_react_router_dom.useNavigate)();
   const { checkPermission } = usePermission();
@@ -268,7 +268,7 @@ var TranslateProvider = ({ children, resources, lng = "zh" }) => {
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   GlobalProvider,
-  RouteProviderWithRouter,
+  RouteProvider,
   TranslateProvider,
   useGlobal,
   useHelmet,

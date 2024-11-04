@@ -76,7 +76,7 @@ type RouteProviderProps = {
     children: ReactNode;
 };
 
-declare const RouteProviderWithRouter: FC<RouteProviderProps>;
+declare const RouteProvider: FC<RouteProviderProps>;
 declare const useRoute: <CustomRouteItemType extends RouteItem = RouteItem>() => RouteProviderValue<CustomRouteItemType>;
 
 type ResourcesType = InitOptions['resources'];
@@ -88,4 +88,4 @@ type TranslateProviderProps = {
 
 declare const TranslateProvider: FC<TranslateProviderProps>;
 
-export { type GlobalData, GlobalProvider, type HelmetContentType, type PermissionType, type ResourcesType, type RouteItem, RouteProviderWithRouter, TranslateProvider, useGlobal, useHelmet, useHttp, usePermission, useRoute };
+export { type GlobalData, GlobalProvider, type HelmetContentType, type PermissionType, type ResourcesType, type RouteItem, RouteProvider, TranslateProvider, useGlobal, useHelmet, useHttp, usePermission, useRoute };
