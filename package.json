@@ -4,11 +4,11 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "yarn update:trans && vite",
+    "dev": "yarn scripts && vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "update:trans": "npx tsup ./public/locales/index.ts && node dist/index.cjs && rm -rf dist"
+    "scripts": "npx tsup ./src/scripts/index.ts --outDir ./src/scripts/ && node ./src/scripts/index.cjs"
   },
   "dependencies": {
     "react": "^18.3.1",

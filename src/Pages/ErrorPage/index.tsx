@@ -7,8 +7,8 @@ export const ErrorPage = () => {
     const { getRouteParams } = useRoute()
 
     const { title = '未知错误', content = '发生了未知的错误' } = getRouteParams<ErrorPageParamsType>() || {}
-    
-    const {t} = useTranslation()
+
+    const { t } = useTranslation()
 
     return <StyledErrorPage>
         <FadeAnimate>

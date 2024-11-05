@@ -2,6 +2,8 @@ import { GlobalProvider, GlobalData, RouteProvider, TranslateProvider, Permissio
 import { routes } from "./routes";
 import { BlogFrame } from "./components";
 import resources from './config/locales.json'
+import themes from './config/themes.json'
+import { ThemeProvider } from "@packages/ui";
 
 const initGlobalData: GlobalData = {
   baseUrl: import.meta.env.VITE_BASE_URL
@@ -15,9 +17,11 @@ function App() {
     <GlobalProvider initGlobalData={initGlobalData}>
       <TranslateProvider resources={resources}>
         <PermissionProvider token={token}>
-          <RouteProvider routes={routes}>
-            <BlogFrame />
-          </RouteProvider>
+          <ThemeProvider<typeof themes> themes={themes}>
+            <RouteProvider routes={routes}>
+              <BlogFrame />
+            </RouteProvider>
+          </ThemeProvider>
         </PermissionProvider>
       </TranslateProvider>
     </GlobalProvider>
