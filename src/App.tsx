@@ -1,7 +1,7 @@
 import { GlobalProvider, GlobalData, RouteProvider, TranslateProvider, PermissionProvider } from "@packages/hooks";
 import { routes } from "./routes";
 import { BlogFrame } from "./components";
-import resources from '../public/locales.json'
+import resources from './config/locales.json'
 
 const initGlobalData: GlobalData = {
   baseUrl: import.meta.env.VITE_BASE_URL
