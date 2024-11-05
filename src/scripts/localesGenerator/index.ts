@@ -9,7 +9,7 @@ const localesResources: ResourcesType = LanguageDic.reduce((acc, cur) => {
     return acc
 }, {} as ResourcesType)
 
-const DEFAULT_DIR = './'
+const DEFAULT_DIR = './public/locales'
 
 const generateResource = (directory: string) => {
     const files = fs.readdirSync(directory);
