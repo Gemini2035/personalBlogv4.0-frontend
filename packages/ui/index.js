@@ -1,3 +1,6 @@
+// src/index.ts
+import styled from "styled-components";
+
 // src/ThemeProvider/index.tsx
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
 import { ThemeProvider as __ThemeProvider, useTheme as __useTheme } from "styled-components";
@@ -29,5 +32,6 @@ var ThemeProvider = ({ themes, children, initThemeMode, listenerDisabled }) => {
 var useTheme = () => useContext(ThemeContext);
 export {
   ThemeProvider,
+  styled,
   useTheme
 };

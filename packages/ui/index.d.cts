@@ -1,5 +1,6 @@
-import { ReactNode, Dispatch, SetStateAction } from 'react';
 import { DefaultTheme } from 'styled-components';
+export { default as styled } from 'styled-components';
+import { ReactNode, Dispatch, SetStateAction } from 'react';
 
 type DefaultThemesType = {
     light: DefaultTheme;
