@@ -1,6 +1,7 @@
 {
   "light": {
-    "color": {
+    "colors": {
+      "background": "#efedea",
       "primary": "#888"
     }
   },

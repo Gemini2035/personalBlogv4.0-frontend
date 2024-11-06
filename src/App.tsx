@@ -17,7 +17,7 @@ function App() {
     <GlobalProvider initGlobalData={initGlobalData}>
       <TranslateProvider resources={resources}>
         <PermissionProvider token={token}>
-          <ThemeProvider<typeof themes> themes={themes}>
+          <ThemeProvider<typeof themes> themes={themes} listenerDisabled>
             <RouteProvider routes={routes}>
               <BlogFrame />
             </RouteProvider>
