@@ -1,6 +1,6 @@
 import { Transition, TransitionStatus } from "react-transition-group";
 import { FadeAnimateProps, FC, CSSProperties, FadeTransition } from "./types";
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 
 const DEFUALT_DURATION = 600;
 const DEFUALT_STYLE: CSSProperties = {
@@ -15,7 +15,9 @@ const DEFUALT_TRANSITION: FadeTransition = {
   exited: { opacity: 0 },
 };
 
-export const FadeAnimate: FC<FadeAnimateProps> = ({ in: defalultIn, customizedTransition, duration, children }) => {
+// TODO: optimized animate
+
+export const FadeAnimate: FC<FadeAnimateProps> = memo(({ in: defalultIn, customizedTransition, duration, children }) => {
   const nodeRef = useRef<HTMLDivElement>(null);
 
   const [inProp, setInProp] = useState<FadeAnimateProps['in']>(defalultIn)
@@ -25,7 +27,7 @@ export const FadeAnimate: FC<FadeAnimateProps> = ({ in: defalultIn, customizedTr
   }, [])
 
   return (
-    <Transition nodeRef={nodeRef} in={inProp} timeout={duration || DEFUALT_DURATION} unmountOnExit>
+    <Transition nodeRef={nodeRef} in={inProp} timeout={duration || DEFUALT_DURATION}>
       {(state: TransitionStatus) => (
         <div style={{
           ...DEFUALT_STYLE,
@@ -37,4 +39,4 @@ export const FadeAnimate: FC<FadeAnimateProps> = ({ in: defalultIn, customizedTr
       )}
     </Transition>
   )
-};
+});

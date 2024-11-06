@@ -17,13 +17,21 @@ var FadeAnimate = ({ in: defalultIn, customizedTransition, duration, children })
   const nodeRef = useRef(null);
   const [inProp, setInProp] = useState(defalultIn);
   useEffect(() => {
-    if (inProp === void 0) setInProp(true);
-  }, []);
-  return /* @__PURE__ */ jsx(Transition, { nodeRef, in: inProp, timeout: duration || DEFUALT_DURATION, unmountOnExit: true, children: (state) => /* @__PURE__ */ jsx("div", { style: {
-    ...DEFUALT_STYLE,
-    ...DEFUALT_TRANSITION[state],
-    ...customizedTransition?.[state] || {}
-  }, children }) });
+    console.log(nodeRef);
+    if (inProp === void 0 && nodeRef.current) setInProp(true);
+  }, [nodeRef]);
+  return /* @__PURE__ */ jsx(Transition, { nodeRef, in: inProp, timeout: duration || DEFUALT_DURATION, children: (state) => /* @__PURE__ */ jsx(
+    "div",
+    {
+      ref: nodeRef,
+      style: {
+        ...DEFUALT_STYLE,
+        ...DEFUALT_TRANSITION[state],
+        ...customizedTransition?.[state] || {}
+      },
+      children
+    }
+  ) });
 };
 export {
   FadeAnimate
