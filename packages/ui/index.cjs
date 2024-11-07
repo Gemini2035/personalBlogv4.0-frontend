@@ -30,12 +30,13 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 // src/index.ts
 var src_exports = {};
 __export(src_exports, {
+  Text: () => Text,
   ThemeProvider: () => ThemeProvider,
-  styled: () => import_styled_components2.default,
+  styled: () => import_styled_components3.default,
   useTheme: () => useTheme
 });
 module.exports = __toCommonJS(src_exports);
-var import_styled_components2 = __toESM(require("styled-components"), 1);
+var import_styled_components3 = __toESM(require("styled-components"), 1);
 
 // src/ThemeProvider/index.tsx
 var import_react = require("react");
@@ -66,8 +67,26 @@ var ThemeProvider = ({ themes, children, initThemeMode, listenerDisabled }) => {
   }, children }) });
 };
 var useTheme = () => (0, import_react.useContext)(ThemeContext);
+
+// src/Text/styles/index.ts
+var import_styled_components2 = __toESM(require("styled-components"), 1);
+var StyledText = (0, import_styled_components2.default)("p")`
+    color: ${({ type = "default", theme }) => theme?.colors?.[type] || "#000"};
+    margin: 0
+`;
+
+// src/Text/index.tsx
+var import_jsx_runtime2 = require("react/jsx-runtime");
+var Text = ({
+  nodeType = "p",
+  children,
+  ...styledTextProps
+}) => {
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(StyledText, { as: nodeType, ...styledTextProps, children });
+};
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
+  Text,
   ThemeProvider,
   styled,
   useTheme

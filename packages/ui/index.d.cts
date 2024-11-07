@@ -1,6 +1,6 @@
 import { DefaultTheme } from 'styled-components';
 export { default as styled } from 'styled-components';
-import { ReactNode, Dispatch, SetStateAction } from 'react';
+import { ReactNode, Dispatch, SetStateAction, FC } from 'react';
 
 type DefaultThemesType = {
     light: DefaultTheme;
@@ -23,4 +23,14 @@ type ThemeProviderValue = {
 declare const ThemeProvider: <T extends DefaultThemesType>({ themes, children, initThemeMode, listenerDisabled }: ThemeProviderProps<T>) => ReactNode;
 declare const useTheme: () => ThemeProviderValue;
 
-export { type DefaultThemesType, ThemeProvider, useTheme };
+type TextProps = StyledTextProps & {
+    nodeType?: 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'p' | 'span';
+    children: ReactNode;
+};
+type StyledTextProps = {
+    type?: 'primary' | 'danger' | 'warning' | 'disabled' | 'default';
+};
+
+declare const Text: FC<TextProps>;
+
+export { type DefaultThemesType, Text, ThemeProvider, useTheme };

@@ -1,5 +1,5 @@
 // src/index.ts
-import styled from "styled-components";
+import styled2 from "styled-components";
 
 // src/ThemeProvider/index.tsx
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
@@ -30,8 +30,26 @@ var ThemeProvider = ({ themes, children, initThemeMode, listenerDisabled }) => {
   }, children }) });
 };
 var useTheme = () => useContext(ThemeContext);
+
+// src/Text/styles/index.ts
+import styled from "styled-components";
+var StyledText = styled("p")`
+    color: ${({ type = "default", theme }) => theme?.colors?.[type] || "#000"};
+    margin: 0
+`;
+
+// src/Text/index.tsx
+import { jsx as jsx2 } from "react/jsx-runtime";
+var Text = ({
+  nodeType = "p",
+  children,
+  ...styledTextProps
+}) => {
+  return /* @__PURE__ */ jsx2(StyledText, { as: nodeType, ...styledTextProps, children });
+};
 export {
+  Text,
   ThemeProvider,
-  styled,
+  styled2 as styled,
   useTheme
 };
