@@ -39,17 +39,16 @@ var DEFUALT_TRANSITION = {
   exiting: { opacity: 0 },
   exited: { opacity: 0 }
 };
-var FadeAnimate = ({ in: defalultIn, customizedTransition, duration, children }) => {
+var FadeAnimate = (0, import_react.memo)(({ innerClassName, in: defalultIn, customizedTransition, duration, children }) => {
   const nodeRef = (0, import_react.useRef)(null);
   const [inProp, setInProp] = (0, import_react.useState)(defalultIn);
   (0, import_react.useEffect)(() => {
-    console.log(nodeRef);
-    if (inProp === void 0 && nodeRef.current) setInProp(true);
-  }, [nodeRef]);
+    if (inProp === void 0) setInProp(true);
+  }, []);
   return /* @__PURE__ */ (0, import_jsx_runtime.jsx)(import_react_transition_group.Transition, { nodeRef, in: inProp, timeout: duration || DEFUALT_DURATION, children: (state) => /* @__PURE__ */ (0, import_jsx_runtime.jsx)(
     "div",
     {
-      ref: nodeRef,
+      className: innerClassName,
       style: {
         ...DEFUALT_STYLE,
         ...DEFUALT_TRANSITION[state],
@@ -58,7 +57,7 @@ var FadeAnimate = ({ in: defalultIn, customizedTransition, duration, children })
       children
     }
   ) });
-};
+});
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   FadeAnimate

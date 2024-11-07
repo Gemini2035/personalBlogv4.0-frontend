@@ -10,4 +10,5 @@ export type FadeAnimateProps = {
   duration?: number
   children: ReactNode 
   customizedTransition?: FadeTransition
+  innerClassName?: string
 }

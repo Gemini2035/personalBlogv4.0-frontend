@@ -17,7 +17,7 @@ const DEFUALT_TRANSITION: FadeTransition = {
 
 // TODO: optimized animate
 
-export const FadeAnimate: FC<FadeAnimateProps> = memo(({ in: defalultIn, customizedTransition, duration, children }) => {
+export const FadeAnimate: FC<FadeAnimateProps> = memo(({ innerClassName, in: defalultIn, customizedTransition, duration, children }) => {
   const nodeRef = useRef<HTMLDivElement>(null);
 
   const [inProp, setInProp] = useState<FadeAnimateProps['in']>(defalultIn)
@@ -29,11 +29,13 @@ export const FadeAnimate: FC<FadeAnimateProps> = memo(({ in: defalultIn, customi
   return (
     <Transition nodeRef={nodeRef} in={inProp} timeout={duration || DEFUALT_DURATION}>
       {(state: TransitionStatus) => (
-        <div style={{
-          ...DEFUALT_STYLE,
-          ...DEFUALT_TRANSITION[state],
-          ...(customizedTransition?.[state] || {})
-        }}>
+        <div
+          className={innerClassName}
+          style={{
+            ...DEFUALT_STYLE,
+            ...DEFUALT_TRANSITION[state],
+            ...(customizedTransition?.[state] || {})
+          }}>
           {children}
         </div>
       )}
