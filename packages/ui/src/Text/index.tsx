@@ -5,10 +5,11 @@ import { StyledText } from "./styles";
 export const Text: FC<TextProps> = ({
     nodeType = 'p',
     children,
+    className,
     ...styledTextProps
 }) => {
     return (
-        <StyledText as={nodeType} {...styledTextProps}>
+        <StyledText className={className} as={nodeType} {...styledTextProps}>
             {children}
         </StyledText>
     )

@@ -81,9 +81,10 @@ var import_jsx_runtime2 = require("react/jsx-runtime");
 var Text = ({
   nodeType = "p",
   children,
+  className,
   ...styledTextProps
 }) => {
-  return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(StyledText, { as: nodeType, ...styledTextProps, children });
+  return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(StyledText, { className, as: nodeType, ...styledTextProps, children });
 };
 
 // src/Flex/styles/index.ts

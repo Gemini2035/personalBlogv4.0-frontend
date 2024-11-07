@@ -43,9 +43,10 @@ import { jsx as jsx2 } from "react/jsx-runtime";
 var Text = ({
   nodeType = "p",
   children,
+  className,
   ...styledTextProps
 }) => {
-  return /* @__PURE__ */ jsx2(StyledText, { as: nodeType, ...styledTextProps, children });
+  return /* @__PURE__ */ jsx2(StyledText, { className, as: nodeType, ...styledTextProps, children });
 };
 
 // src/Flex/styles/index.ts
