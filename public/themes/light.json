@@ -1,6 +1,7 @@
 {
     "colors": {
         "background": "#efedea",
-        "primary": "#888"
+        "primary": "#888",
+        "warning": "#e28432"
     }
 }

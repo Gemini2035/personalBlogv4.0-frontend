@@ -2,12 +2,14 @@
   "en": {
     "translation": {
       "global.welcome": "welcome",
+      "global.warning": "warning",
       "portalHome.title": "portalHome"
     }
   },
   "zh": {
     "translation": {
       "global.welcome": "欢迎",
+      "global.warning": "警告",
       "portalHome.title": "bbb"
     }
   }

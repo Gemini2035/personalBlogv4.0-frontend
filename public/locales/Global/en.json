@@ -1,3 +1,4 @@
 {
-    "global.welcome": "welcome"
+    "global.welcome": "welcome",
+    "global.warning": "warning"
 }
