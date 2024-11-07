@@ -1,4 +1,4 @@
-import { DefaultTheme } from 'styled-components';
+import { DefaultTheme, CSSProperties } from 'styled-components';
 export { default as styled } from 'styled-components';
 import { ReactNode, Dispatch, SetStateAction, FC } from 'react';
 
@@ -33,4 +33,17 @@ type StyledTextProps = {
 
 declare const Text: FC<TextProps>;
 
-export { type DefaultThemesType, Text, ThemeProvider, useTheme };
+type FlexProps = StyledFlexProps & {
+    children: ReactNode;
+    className?: string;
+};
+type StyledFlexProps = {
+    verticle?: boolean;
+    align?: CSSProperties['alignItems'];
+    justify?: CSSProperties['justifyContent'];
+    gap?: 'small' | 'middle' | 'large' | number;
+};
+
+declare const Flex: FC<FlexProps>;
+
+export { type DefaultThemesType, Flex, Text, ThemeProvider, useTheme };

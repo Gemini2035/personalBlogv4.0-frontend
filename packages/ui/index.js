@@ -1,5 +1,5 @@
 // src/index.ts
-import styled2 from "styled-components";
+import styled3 from "styled-components";
 
 // src/ThemeProvider/index.tsx
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
@@ -47,9 +47,39 @@ var Text = ({
 }) => {
   return /* @__PURE__ */ jsx2(StyledText, { as: nodeType, ...styledTextProps, children });
 };
+
+// src/Flex/styles/index.ts
+import styled2 from "styled-components";
+var DEFAULT_GAP = "5px";
+var generateGap = (gap) => {
+  if (typeof gap === "string") {
+    switch (gap) {
+      case "small":
+        return "1px";
+      case "middle":
+        return DEFAULT_GAP;
+      case "large":
+        return "10px";
+      default:
+        return DEFAULT_GAP;
+    }
+  } else return gap ? gap + "px" : DEFAULT_GAP;
+};
+var StyledFlex = styled2.div`
+    display: flex;
+    flex-direction: ${({ verticle }) => verticle ? "column" : "row"};
+    align-items: ${({ align }) => align};
+    justify-content: ${({ justify }) => justify};
+    gap: ${({ gap }) => generateGap(gap)}
+`;
+
+// src/Flex/index.tsx
+import { jsx as jsx3 } from "react/jsx-runtime";
+var Flex = ({ children, className, ...styledFlexProps }) => /* @__PURE__ */ jsx3(StyledFlex, { className, ...styledFlexProps, children });
 export {
+  Flex,
   Text,
   ThemeProvider,
-  styled2 as styled,
+  styled3 as styled,
   useTheme
 };

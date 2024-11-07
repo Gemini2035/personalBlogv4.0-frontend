@@ -30,13 +30,14 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 // src/index.ts
 var src_exports = {};
 __export(src_exports, {
+  Flex: () => Flex,
   Text: () => Text,
   ThemeProvider: () => ThemeProvider,
-  styled: () => import_styled_components3.default,
+  styled: () => import_styled_components4.default,
   useTheme: () => useTheme
 });
 module.exports = __toCommonJS(src_exports);
-var import_styled_components3 = __toESM(require("styled-components"), 1);
+var import_styled_components4 = __toESM(require("styled-components"), 1);
 
 // src/ThemeProvider/index.tsx
 var import_react = require("react");
@@ -84,8 +85,38 @@ var Text = ({
 }) => {
   return /* @__PURE__ */ (0, import_jsx_runtime2.jsx)(StyledText, { as: nodeType, ...styledTextProps, children });
 };
+
+// src/Flex/styles/index.ts
+var import_styled_components3 = __toESM(require("styled-components"), 1);
+var DEFAULT_GAP = "5px";
+var generateGap = (gap) => {
+  if (typeof gap === "string") {
+    switch (gap) {
+      case "small":
+        return "1px";
+      case "middle":
+        return DEFAULT_GAP;
+      case "large":
+        return "10px";
+      default:
+        return DEFAULT_GAP;
+    }
+  } else return gap ? gap + "px" : DEFAULT_GAP;
+};
+var StyledFlex = import_styled_components3.default.div`
+    display: flex;
+    flex-direction: ${({ verticle }) => verticle ? "column" : "row"};
+    align-items: ${({ align }) => align};
+    justify-content: ${({ justify }) => justify};
+    gap: ${({ gap }) => generateGap(gap)}
+`;
+
+// src/Flex/index.tsx
+var import_jsx_runtime3 = require("react/jsx-runtime");
+var Flex = ({ children, className, ...styledFlexProps }) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(StyledFlex, { className, ...styledFlexProps, children });
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
+  Flex,
   Text,
   ThemeProvider,
   styled,
