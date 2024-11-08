@@ -1,5 +1,5 @@
 // src/index.ts
-import styled3 from "styled-components";
+import styled4 from "styled-components";
 
 // src/ThemeProvider/index.tsx
 import { createContext, useContext, useEffect, useMemo, useState } from "react";
@@ -77,10 +77,25 @@ var StyledFlex = styled2.div`
 // src/Flex/index.tsx
 import { jsx as jsx3 } from "react/jsx-runtime";
 var Flex = ({ children, className, ...styledFlexProps }) => /* @__PURE__ */ jsx3(StyledFlex, { className, ...styledFlexProps, children });
+
+// src/Img/styles/index.ts
+import styled3 from "styled-components";
+var StyledImg = styled3.img`
+    width: ${({ width }) => width ? width : "auto"};
+    height: ${({ height }) => height ? height : "auto"};
+    display: ${({ block }) => block ? "block" : "inline-block"}
+`;
+
+// src/Img/index.tsx
+import { jsx as jsx4 } from "react/jsx-runtime";
+var Img = (props) => {
+  return /* @__PURE__ */ jsx4(StyledImg, { ...props });
+};
 export {
   Flex,
+  Img,
   Text,
   ThemeProvider,
-  styled3 as styled,
+  styled4 as styled,
   useTheme
 };

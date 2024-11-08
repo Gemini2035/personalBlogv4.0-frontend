@@ -31,13 +31,14 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 var src_exports = {};
 __export(src_exports, {
   Flex: () => Flex,
+  Img: () => Img,
   Text: () => Text,
   ThemeProvider: () => ThemeProvider,
-  styled: () => import_styled_components4.default,
+  styled: () => import_styled_components5.default,
   useTheme: () => useTheme
 });
 module.exports = __toCommonJS(src_exports);
-var import_styled_components4 = __toESM(require("styled-components"), 1);
+var import_styled_components5 = __toESM(require("styled-components"), 1);
 
 // src/ThemeProvider/index.tsx
 var import_react = require("react");
@@ -115,9 +116,24 @@ var StyledFlex = import_styled_components3.default.div`
 // src/Flex/index.tsx
 var import_jsx_runtime3 = require("react/jsx-runtime");
 var Flex = ({ children, className, ...styledFlexProps }) => /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(StyledFlex, { className, ...styledFlexProps, children });
+
+// src/Img/styles/index.ts
+var import_styled_components4 = __toESM(require("styled-components"), 1);
+var StyledImg = import_styled_components4.default.img`
+    width: ${({ width }) => width ? width : "auto"};
+    height: ${({ height }) => height ? height : "auto"};
+    display: ${({ block }) => block ? "block" : "inline-block"}
+`;
+
+// src/Img/index.tsx
+var import_jsx_runtime4 = require("react/jsx-runtime");
+var Img = (props) => {
+  return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(StyledImg, { ...props });
+};
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   Flex,
+  Img,
   Text,
   ThemeProvider,
   styled,

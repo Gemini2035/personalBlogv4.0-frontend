@@ -1,6 +1,6 @@
 import { DefaultTheme, CSSProperties } from 'styled-components';
 export { default as styled } from 'styled-components';
-import { ReactNode, Dispatch, SetStateAction, FC } from 'react';
+import { ReactNode, Dispatch, SetStateAction, FC, ImgHTMLAttributes, CSSProperties as CSSProperties$1 } from 'react';
 
 type DefaultThemesType = {
     light: DefaultTheme;
@@ -47,4 +47,17 @@ type StyledFlexProps = {
 
 declare const Flex: FC<FlexProps>;
 
-export { type DefaultThemesType, Flex, Text, ThemeProvider, useTheme };
+type StyledImageProps = {
+    width?: CSSProperties$1['width'];
+    height?: CSSProperties$1['height'];
+    block?: boolean;
+};
+type ImageProps = StyledImageProps & ImgHTMLAttributes<HTMLImageElement> & {
+    src: string;
+    alt: string;
+    title: string;
+};
+
+declare const Img: FC<ImageProps>;
+
+export { type DefaultThemesType, Flex, Img, Text, ThemeProvider, useTheme };
