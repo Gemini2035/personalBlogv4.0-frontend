@@ -191,12 +191,16 @@ var RouteProviderCore = ({ routes, children }) => {
     }
     return result;
   }, [routes, __navigate]);
-  const navigate = useCallback2(({ pathname: pathname2, ...restPathFields }) => {
-    const targetRouteItem = findRouteItemByPathName(pathname2);
-    const { permissionRequire } = targetRouteItem;
-    const { status } = hasPermission(permissionRequire);
-    if (status) __navigate({ pathname: pathname2, ...restPathFields });
-    else __navigate({ pathname: "error" });
+  const navigate = useCallback2((props) => {
+    if (typeof props === "number") __navigate(props);
+    else {
+      const { pathname: pathname2, ...restPathFields } = props;
+      const targetRouteItem = findRouteItemByPathName(pathname2);
+      const { permissionRequire } = targetRouteItem;
+      const { status } = hasPermission(permissionRequire);
+      if (status) __navigate({ pathname: pathname2, ...restPathFields });
+      else __navigate({ pathname: "error" });
+    }
   }, [findRouteItemByPathName, hasPermission, __navigate]);
   const currentLocation = useMemo2(() => findRouteItemByPathName(pathname) || {}, [pathname, findRouteItemByPathName]);
   const getRouteParams = useCallback2(() => state, []);

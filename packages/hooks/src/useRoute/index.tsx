@@ -9,7 +9,7 @@ const RouteContext = createContext<RouteProviderValue>({
     renderedRoutes: null,
     navigate: () => { },
     currentLocation: {},
-    getRouteParams: < T extends object = object, >() => ({} as T)
+    getRouteParams: <T extends object = object,>() => ({} as T)
 })
 
 export const RouteProvider: FC<RouteProviderProps> = (props) => (
@@ -33,15 +33,19 @@ const RouteProviderCore: FC<RouteProviderProps> = ({ routes, children }) => {
         return result
     }, [routes, __navigate])
 
-    const navigate = useCallback<RouteProviderValue['navigate']>(({ pathname, ...restPathFields }) => {
-        const targetRouteItem = findRouteItemByPathName(pathname)
+    const navigate = useCallback<RouteProviderValue['navigate']>((props) => {
+        if (typeof props === 'number') __navigate(props)
+        else {
+            const { pathname, ...restPathFields } = props
+            const targetRouteItem = findRouteItemByPathName(pathname)
 
-        const { permissionRequire } = targetRouteItem
-        const { status } = hasPermission(permissionRequire)
+            const { permissionRequire } = targetRouteItem
+            const { status } = hasPermission(permissionRequire)
 
-        // TODO: Enhance the error page
-        if (status) __navigate({ pathname, ...restPathFields })
-        else __navigate({ pathname: 'error' })
+            // TODO: Enhance the error page
+            if (status) __navigate({ pathname, ...restPathFields })
+            else __navigate({ pathname: 'error' })
+        }
 
     }, [findRouteItemByPathName, hasPermission, __navigate])
 

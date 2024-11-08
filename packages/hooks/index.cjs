@@ -234,12 +234,16 @@ var RouteProviderCore = ({ routes, children }) => {
     }
     return result;
   }, [routes, __navigate]);
-  const navigate = (0, import_react5.useCallback)(({ pathname: pathname2, ...restPathFields }) => {
-    const targetRouteItem = findRouteItemByPathName(pathname2);
-    const { permissionRequire } = targetRouteItem;
-    const { status } = hasPermission(permissionRequire);
-    if (status) __navigate({ pathname: pathname2, ...restPathFields });
-    else __navigate({ pathname: "error" });
+  const navigate = (0, import_react5.useCallback)((props) => {
+    if (typeof props === "number") __navigate(props);
+    else {
+      const { pathname: pathname2, ...restPathFields } = props;
+      const targetRouteItem = findRouteItemByPathName(pathname2);
+      const { permissionRequire } = targetRouteItem;
+      const { status } = hasPermission(permissionRequire);
+      if (status) __navigate({ pathname: pathname2, ...restPathFields });
+      else __navigate({ pathname: "error" });
+    }
   }, [findRouteItemByPathName, hasPermission, __navigate]);
   const currentLocation = (0, import_react5.useMemo)(() => findRouteItemByPathName(pathname) || {}, [pathname, findRouteItemByPathName]);
   const getRouteParams = (0, import_react5.useCallback)(() => state, []);

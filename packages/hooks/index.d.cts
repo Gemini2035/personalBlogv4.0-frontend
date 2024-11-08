@@ -73,7 +73,7 @@ type RouteProviderValue<T extends RouteItem = RouteItem> = {
     renderedRoutes: ReactNode;
     navigate: (args: Partial<Path> & {
         pathname: Path['pathname'];
-    }) => void;
+    } | number) => void;
     currentLocation: T;
     getRouteParams: <T extends object = object>() => T;
 };
