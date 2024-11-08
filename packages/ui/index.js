@@ -52,6 +52,7 @@ var Text = ({
 
 // src/Flex/styles/index.ts
 import styled2 from "styled-components";
+import isPropValid from "@emotion/is-prop-valid";
 var DEFAULT_GAP = "5px";
 var generateGap = (gap) => {
   if (typeof gap === "string") {
@@ -67,7 +68,9 @@ var generateGap = (gap) => {
     }
   } else return gap ? gap + "px" : DEFAULT_GAP;
 };
-var StyledFlex = styled2.div`
+var StyledFlex = styled2.div.withConfig({
+  shouldForwardProp: (prop) => isPropValid(prop)
+})`
     display: flex;
     flex-direction: ${({ verticle }) => verticle ? "column" : "row"};
     align-items: ${({ align }) => align};

@@ -91,6 +91,7 @@ var Text = ({
 
 // src/Flex/styles/index.ts
 var import_styled_components3 = __toESM(require("styled-components"), 1);
+var import_is_prop_valid = __toESM(require("@emotion/is-prop-valid"), 1);
 var DEFAULT_GAP = "5px";
 var generateGap = (gap) => {
   if (typeof gap === "string") {
@@ -106,7 +107,9 @@ var generateGap = (gap) => {
     }
   } else return gap ? gap + "px" : DEFAULT_GAP;
 };
-var StyledFlex = import_styled_components3.default.div`
+var StyledFlex = import_styled_components3.default.div.withConfig({
+  shouldForwardProp: (prop) => (0, import_is_prop_valid.default)(prop)
+})`
     display: flex;
     flex-direction: ${({ verticle }) => verticle ? "column" : "row"};
     align-items: ${({ align }) => align};
