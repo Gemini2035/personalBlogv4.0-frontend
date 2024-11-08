@@ -10,8 +10,9 @@ const PermissionContext = createContext<PermissionProviderValue>({
     reloadPermission: () => { }
 })
 
-export const PermissionProvider: FC<PermissionProviderProps> = ({ token, children }) => {
+export const PermissionProvider: FC<PermissionProviderProps> = ({ token, children, fallback }) => {
     const {
+        loading: permissionLoading,
         fetchData: fetchPermission,
         data: permissionData,
         // code: permissionResponseCode
@@ -38,7 +39,7 @@ export const PermissionProvider: FC<PermissionProviderProps> = ({ token, childre
             hasPermission,
             reloadPermission: fetchPermission
         }}>
-            {children}
+            {permissionLoading ? (fallback || <>getting permissions...</>) : children}
         </PermissionContext.Provider>
     )
 }

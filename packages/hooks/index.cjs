@@ -184,8 +184,9 @@ var PermissionContext = (0, import_react4.createContext)({
   reloadPermission: () => {
   }
 });
-var PermissionProvider = ({ token, children }) => {
+var PermissionProvider = ({ token, children, fallback }) => {
   const {
+    loading: permissionLoading,
     fetchData: fetchPermission,
     data: permissionData
     // code: permissionResponseCode
@@ -207,7 +208,7 @@ var PermissionProvider = ({ token, children }) => {
     permissionList: permissionData || [],
     hasPermission,
     reloadPermission: fetchPermission
-  }, children });
+  }, children: permissionLoading ? fallback || /* @__PURE__ */ (0, import_jsx_runtime3.jsx)(import_jsx_runtime3.Fragment, { children: "getting permissions..." }) : children });
 };
 var usePermission = () => (0, import_react4.useContext)(PermissionContext);
 

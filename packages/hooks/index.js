@@ -133,15 +133,16 @@ var useHttp = ({
 
 // src/usePermission/index.tsx
 import { createContext as createContext2, useCallback, useContext as useContext2, useEffect } from "react";
-import { jsx as jsx2 } from "react/jsx-runtime";
+import { Fragment, jsx as jsx2 } from "react/jsx-runtime";
 var PermissionContext = createContext2({
   hasPermission: () => ({ status: false, permissionsDeny: [] }),
   permissionList: [],
   reloadPermission: () => {
   }
 });
-var PermissionProvider = ({ token, children }) => {
+var PermissionProvider = ({ token, children, fallback }) => {
   const {
+    loading: permissionLoading,
     fetchData: fetchPermission,
     data: permissionData
     // code: permissionResponseCode
@@ -163,7 +164,7 @@ var PermissionProvider = ({ token, children }) => {
     permissionList: permissionData || [],
     hasPermission,
     reloadPermission: fetchPermission
-  }, children });
+  }, children: permissionLoading ? fallback || /* @__PURE__ */ jsx2(Fragment, { children: "getting permissions..." }) : children });
 };
 var usePermission = () => useContext2(PermissionContext);
 

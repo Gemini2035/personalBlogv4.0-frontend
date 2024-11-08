@@ -16,4 +16,5 @@ export type PermissionProviderValue = {
 export type PermissionProviderProps = {
     token: string
     children: ReactNode
+    fallback?: ReactNode
 }
