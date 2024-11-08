@@ -74,6 +74,7 @@ var useTheme = () => (0, import_react.useContext)(ThemeContext);
 var import_styled_components2 = __toESM(require("styled-components"), 1);
 var StyledText = (0, import_styled_components2.default)("p")`
     color: ${({ type = "default", theme }) => theme?.colors?.[type] || "#000"};
+    font-weight: ${({ bold }) => bold === true ? "bold" : bold || "inherit"};
     margin: 0
 `;
 

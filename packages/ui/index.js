@@ -35,6 +35,7 @@ var useTheme = () => useContext(ThemeContext);
 import styled from "styled-components";
 var StyledText = styled("p")`
     color: ${({ type = "default", theme }) => theme?.colors?.[type] || "#000"};
+    font-weight: ${({ bold }) => bold === true ? "bold" : bold || "inherit"};
     margin: 0
 `;
 

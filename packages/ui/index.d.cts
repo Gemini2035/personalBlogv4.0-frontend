@@ -1,6 +1,6 @@
-import { DefaultTheme, CSSProperties } from 'styled-components';
+import { DefaultTheme, CSSProperties as CSSProperties$1 } from 'styled-components';
 export { default as styled } from 'styled-components';
-import { ReactNode, Dispatch, SetStateAction, FC, ImgHTMLAttributes, CSSProperties as CSSProperties$1 } from 'react';
+import { ReactNode, Dispatch, SetStateAction, CSSProperties, FC, ImgHTMLAttributes } from 'react';
 
 type DefaultThemesType = {
     light: DefaultTheme;
@@ -30,6 +30,7 @@ type TextProps = StyledTextProps & {
 };
 type StyledTextProps = {
     type?: 'primary' | 'danger' | 'warning' | 'disabled' | 'default';
+    bold?: true | CSSProperties['fontWeight'];
 };
 
 declare const Text: FC<TextProps>;
@@ -40,16 +41,16 @@ type FlexProps = StyledFlexProps & {
 };
 type StyledFlexProps = {
     verticle?: boolean;
-    align?: CSSProperties['alignItems'];
-    justify?: CSSProperties['justifyContent'];
+    align?: CSSProperties$1['alignItems'];
+    justify?: CSSProperties$1['justifyContent'];
     gap?: 'small' | 'middle' | 'large' | number;
 };
 
 declare const Flex: FC<FlexProps>;
 
 type StyledImageProps = {
-    width?: CSSProperties$1['width'];
-    height?: CSSProperties$1['height'];
+    width?: CSSProperties['width'];
+    height?: CSSProperties['height'];
     block?: boolean;
 };
 type ImageProps = StyledImageProps & ImgHTMLAttributes<HTMLImageElement> & {
