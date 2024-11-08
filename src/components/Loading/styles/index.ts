@@ -11,7 +11,7 @@ export const StyledLoading = styled.div<StyledLoadingProps>`
     width: ${({ width }) => width ?? '100vw'};
     
     .loading-icon {
-        filter: ${({imgColorRevert}) => imgColorRevert ? 'invert(1)' : 'none'};
+        filter: ${({filter}) => filter ?? 'none'};
     }
     
     .loading-text {

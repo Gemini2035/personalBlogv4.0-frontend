@@ -8,18 +8,18 @@ export const Loading: FC<LoadingPops> = (props) => {
     const { t } = useTranslation()
     const { themeMode } = useTheme()
 
-    const imgColorRevert = useMemo(() => {
+    const filter = useMemo(() => {
         switch (themeMode) {
             case 'light':
-                return true;
+                return 'invert(1)';
 
             default:
-                return false;
+                return '';
         }
     }, [themeMode])
 
     return (
-        <StyledLoading {...{ imgColorRevert, ...props }}>
+        <StyledLoading {...{ filter, ...props }}>
             <Img
                 src='/loading.gif'
                 alt='loading-img'
