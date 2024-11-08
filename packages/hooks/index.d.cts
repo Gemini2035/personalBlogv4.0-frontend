@@ -3,7 +3,7 @@ import { AxiosRequestConfig } from 'axios';
 import * as react_jsx_runtime from 'react/jsx-runtime';
 import { RouteProps, Path } from 'react-router-dom';
 import { InitOptions } from 'i18next';
-export { useTranslation } from 'react-i18next';
+export { Trans, TransProps, useTranslation } from 'react-i18next';
 
 type AcceptableHelmetTag = 'meta' | 'title' | 'link';
 type HelmetTagProps = Record<string, string>;

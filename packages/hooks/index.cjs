@@ -33,6 +33,7 @@ __export(src_exports, {
   GlobalProvider: () => GlobalProvider,
   PermissionProvider: () => PermissionProvider,
   RouteProvider: () => RouteProvider,
+  Trans: () => import_react_i18next2.Trans,
   TranslateProvider: () => TranslateProvider,
   useGlobal: () => useGlobal,
   useHelmet: () => useHelmet,
@@ -261,6 +262,7 @@ var useRoute = () => (0, import_react5.useContext)(RouteContext);
 var import_react_i18next = require("react-i18next");
 var import_i18next_browser_languagedetector = __toESM(require("i18next-browser-languagedetector"), 1);
 var import_i18next = __toESM(require("i18next"), 1);
+var import_react_i18next2 = require("react-i18next");
 var import_jsx_runtime5 = require("react/jsx-runtime");
 var TranslateProvider = ({ children, resources, lng = "zh" }) => {
   import_i18next.default.use(import_i18next_browser_languagedetector.default).use(import_react_i18next.initReactI18next).init({
@@ -278,6 +280,7 @@ var TranslateProvider = ({ children, resources, lng = "zh" }) => {
   GlobalProvider,
   PermissionProvider,
   RouteProvider,
+  Trans,
   TranslateProvider,
   useGlobal,
   useHelmet,

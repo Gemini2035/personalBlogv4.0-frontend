@@ -22,6 +22,6 @@ export const TranslateProvider: FC<TranslateProviderProps> = ({ children, resour
         </I18nextProvider>
     )
 }
-
 export { useTranslation }
 export type { ResourcesType } from './types'
+export { Trans } from 'react-i18next'

@@ -218,6 +218,7 @@ var useRoute = () => useContext3(RouteContext);
 import { I18nextProvider, initReactI18next, useTranslation } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import i18n from "i18next";
+import { Trans } from "react-i18next";
 import { jsx as jsx4 } from "react/jsx-runtime";
 var TranslateProvider = ({ children, resources, lng = "zh" }) => {
   i18n.use(LanguageDetector).use(initReactI18next).init({
@@ -234,6 +235,7 @@ export {
   GlobalProvider,
   PermissionProvider,
   RouteProvider,
+  Trans,
   TranslateProvider,
   useGlobal,
   useHelmet,
