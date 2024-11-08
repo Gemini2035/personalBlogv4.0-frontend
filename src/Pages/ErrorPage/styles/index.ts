@@ -26,12 +26,26 @@ export const StyledErrorPage = styled(Flex)`
             .warning-icon {
                 width: 20px;
                 height: auto;
+                animation: blink-animation 1.5s infinite;
+
+
+                @keyframes blink-animation {
+                    0% {
+                        opacity: 1;
+                    }
+                    50% {
+                        opacity: 0;
+                    }
+                    100% {
+                        opacity: 1;
+                    }
+                }
             }
 
             &::before {
                 content: '';
                 width: 70%;
-                border: 2.5px solid ${({theme}) => theme.colors.border};
+                border: 2.5px solid ${({ theme }) => theme.colors.border};
                 position: absolute;
                 bottom: 100%;
                 border-radius: 10px;
@@ -42,16 +56,16 @@ export const StyledErrorPage = styled(Flex)`
             text-align: start;
             margin-top: 10px;
         }
+    }
 
-        .tips {
-            width: 100%;
-            white-space: nowrap;
-            margin-top: 75px;
-            text-align: start;
-            a {
-                color: inherit;
-                margin: 0 1px;
-            }
+    .tips {
+        width: 100%;
+        margin-top: 100px;
+        text-align: center;
+
+        a {
+            color: inherit;
+            margin: 0 1px;
         }
     }
 `

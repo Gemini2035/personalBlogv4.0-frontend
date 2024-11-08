@@ -26,7 +26,7 @@ export const ErrorPage: FC = () => {
     ), [])
 
     return (
-        <StyledErrorPage align="center" justify="center">
+        <StyledErrorPage align="center" justify="center" verticle>
             <div className="maintain">
                 <FadeAnimate innerClassName="icon">
                     <Img src="/site.svg" alt="site.svg" title="" />
@@ -39,17 +39,17 @@ export const ErrorPage: FC = () => {
                     <Img src="/warning.svg" alt="warning_img" title="" className="warning-icon" />
                 </Flex>
                 <Text className="content">{textAppear(content)}</Text>
-                <FadeAnimate>
-                    <Text className="tips">
-                        <Trans
-                            i18nKey="errorPage.tips"
-                            components={{
-                                retryLink: <RetryLink />,
-                                contactLink: <ContactLink />
-                            }} />
-                    </Text>
-                </FadeAnimate>
             </div>
+            <FadeAnimate>
+                <Text className="tips">
+                    <Trans
+                        i18nKey="errorPage.tips"
+                        components={{
+                            retryLink: <RetryLink />,
+                            contactLink: <ContactLink />
+                        }} />
+                </Text>
+            </FadeAnimate>
         </StyledErrorPage>
     )
 }
