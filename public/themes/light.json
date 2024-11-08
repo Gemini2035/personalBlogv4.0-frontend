@@ -2,6 +2,7 @@
     "colors": {
         "background": "#efedea",
         "primary": "#888",
-        "warning": "#e28432"
+        "warning": "#f37f05",
+        "border": "#000"
     }
 }
