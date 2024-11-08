@@ -1,5 +1,5 @@
 {
-    "errorPage.tips": "Sorry to interrupt your browsing, but you can <retryLink>click here</retryLink> to retry or <contactLink>contact us</contactLink>.",
+    "errorPage.tips": "Sorry to interrupt your browsing, but you can <retryLink>click here</retryLink> to retry or <contactLink>contact me</contactLink>!",
     "errorPage.defaultTitle": "Unknown Error",
     "errorPage.defaultContent": "There appears an unexpected error!"
 }

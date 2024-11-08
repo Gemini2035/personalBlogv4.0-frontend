@@ -1,5 +1,5 @@
 {
-    "errorPage.tips": "很抱歉打扰您的浏览，不过您可以<retryLink>点击这里</retryLink>重试或者尝试<contactLink>联系我们</contactLink> ",
+    "errorPage.tips": "很抱歉打扰您的浏览，不过您可以<retryLink>点击这里</retryLink>重试或者尝试<contactLink>联系我</contactLink>! ",
     "errorPage.defaultTitle": "未知错误",
     "errorPage.defaultContent": "发生了未知错误！"
 }
