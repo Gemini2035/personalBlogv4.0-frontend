@@ -1,4 +1,5 @@
 {
     "global.welcome": "welcome",
-    "global.warning": "warning"
+    "global.warning": "warning",
+    "global.loading": "loading..."
 }

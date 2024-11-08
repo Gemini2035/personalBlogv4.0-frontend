@@ -1,4 +1,5 @@
 {
     "global.welcome": "欢迎",
-    "global.warning": "警告"
+    "global.warning": "警告",
+    "global.loading": "加载中..."
 }

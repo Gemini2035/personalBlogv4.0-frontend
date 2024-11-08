@@ -6,6 +6,7 @@
       "errorPage.defaultContent": "There appears an unexpected error!",
       "global.welcome": "welcome",
       "global.warning": "warning",
+      "global.loading": "loading...",
       "portalHome.title": "portalHome"
     }
   },
@@ -16,6 +17,7 @@
       "errorPage.defaultContent": "发生了未知错误！",
       "global.welcome": "欢迎",
       "global.warning": "警告",
+      "global.loading": "加载中...",
       "portalHome.title": "bbb"
     }
   }

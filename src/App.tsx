@@ -4,6 +4,7 @@ import { BlogFrame } from "./components";
 import resources from './config/locales.json'
 import themes from './config/themes.json'
 import { ThemeProvider } from "@packages/ui";
+import { Loading } from "./components/Loading";
 
 const initGlobalData: GlobalData = {
   baseUrl: import.meta.env.VITE_BASE_URL
@@ -16,13 +17,13 @@ function App() {
   return (
     <GlobalProvider initGlobalData={initGlobalData}>
       <TranslateProvider resources={resources}>
-        <PermissionProvider token={token}>
-          <ThemeProvider<typeof themes> themes={themes} listenerDisabled>
+        <ThemeProvider<typeof themes> themes={themes} listenerDisabled>
+          <PermissionProvider token={token} fallback={<Loading />}>
             <RouteProvider routes={routes}>
               <BlogFrame />
             </RouteProvider>
-          </ThemeProvider>
-        </PermissionProvider>
+          </PermissionProvider>
+        </ThemeProvider>
       </TranslateProvider>
     </GlobalProvider>
   )
