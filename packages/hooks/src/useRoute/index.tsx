@@ -1,7 +1,8 @@
-import { createContext, useCallback, useContext, useMemo } from "react";
+import { createContext, useCallback, useContext, useEffect, useMemo } from "react";
 import { RouteItem, RouteProviderValue, FC, RouteProviderProps, ReactNode } from "./types";
 import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { usePermission } from "../usePermission";
+import { useTranslation } from "../useTranslate";
 
 export type { RouteItem }
 
@@ -23,31 +24,30 @@ const RouteProviderCore: FC<RouteProviderProps> = ({ routes, children }) => {
     const { pathname, state } = useLocation()
     const __navigate = useNavigate()
     const { hasPermission } = usePermission()
+    const { t } = useTranslation()
 
-    const findRouteItemByPathName = useCallback((targetPath: string) => {
-        const result = routes.find(({ path }) => new RegExp(`^${path?.replace(/:\w+/g, '(\\w+)')}$`).test(targetPath))
-        if (!result) {
-            __navigate({ pathname: 'error' })
-            return {}
-        }
-        return result
-    }, [routes, __navigate])
+    const findRouteItemByPathName = useCallback((targetPath: string) => routes.find(({ path }) => new RegExp(`^${path?.replace(/:\w+/g, '(\\w+)')}$`).test(targetPath)), [routes, __navigate])
 
     const navigate = useCallback<RouteProviderValue['navigate']>((props) => {
         if (typeof props === 'number') __navigate(props)
         else {
             const { pathname, ...restPathFields } = props
             const targetRouteItem = findRouteItemByPathName(pathname)
-
+            if (!targetRouteItem) return
             const { permissionRequire } = targetRouteItem
-            const { status } = hasPermission(permissionRequire)
+            const { status, permissionsDeny } = hasPermission(permissionRequire)
 
             // TODO: Enhance the error page
             if (status) __navigate({ pathname, ...restPathFields })
-            else __navigate({ pathname: 'error' })
+            else __navigate({ pathname: 'error' }, {
+                state: {
+                    title: t("Permission deny"),
+                    content: `${t("Required permission(s)")}: ${permissionsDeny.join(", ")}`
+                }
+            })
         }
 
-    }, [findRouteItemByPathName, hasPermission, __navigate])
+    }, [findRouteItemByPathName, hasPermission, __navigate, t])
 
     const currentLocation = useMemo(() => findRouteItemByPathName(pathname) || {}, [pathname, findRouteItemByPathName])
 
@@ -58,6 +58,16 @@ const RouteProviderCore: FC<RouteProviderProps> = ({ routes, children }) => {
             {routes.map((route, index) => <Route errorElement={<Navigate to={{ pathname: '/error' }} />} key={index} {...route} />)}
         </Routes>
     ), [routes])
+
+    useEffect(() => {
+        if (!findRouteItemByPathName(pathname)) __navigate({ pathname: 'error' },
+            {
+                state: {
+                    title: t('404 page not found'),
+                    content: t(`This site doesn't have this route!`)
+                }
+            })
+    }, [pathname, findRouteItemByPathName])
 
 
     return (

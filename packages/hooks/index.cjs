@@ -215,56 +215,13 @@ var usePermission = () => (0, import_react4.useContext)(PermissionContext);
 // src/useRoute/index.tsx
 var import_react5 = require("react");
 var import_react_router_dom = require("react-router-dom");
-var import_jsx_runtime4 = require("react/jsx-runtime");
-var RouteContext = (0, import_react5.createContext)({
-  renderedRoutes: null,
-  navigate: () => {
-  },
-  currentLocation: {},
-  getRouteParams: () => ({})
-});
-var RouteProvider = (props) => /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_react_router_dom.BrowserRouter, { children: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(RouteProviderCore, { ...props }) });
-var RouteProviderCore = ({ routes, children }) => {
-  const { pathname, state } = (0, import_react_router_dom.useLocation)();
-  const __navigate = (0, import_react_router_dom.useNavigate)();
-  const { hasPermission } = usePermission();
-  const findRouteItemByPathName = (0, import_react5.useCallback)((targetPath) => {
-    const result = routes.find(({ path }) => new RegExp(`^${path?.replace(/:\w+/g, "(\\w+)")}$`).test(targetPath));
-    if (!result) {
-      __navigate({ pathname: "error" });
-      return {};
-    }
-    return result;
-  }, [routes, __navigate]);
-  const navigate = (0, import_react5.useCallback)((props) => {
-    if (typeof props === "number") __navigate(props);
-    else {
-      const { pathname: pathname2, ...restPathFields } = props;
-      const targetRouteItem = findRouteItemByPathName(pathname2);
-      const { permissionRequire } = targetRouteItem;
-      const { status } = hasPermission(permissionRequire);
-      if (status) __navigate({ pathname: pathname2, ...restPathFields });
-      else __navigate({ pathname: "error" });
-    }
-  }, [findRouteItemByPathName, hasPermission, __navigate]);
-  const currentLocation = (0, import_react5.useMemo)(() => findRouteItemByPathName(pathname) || {}, [pathname, findRouteItemByPathName]);
-  const getRouteParams = (0, import_react5.useCallback)(() => state, []);
-  const renderedRoutes = (0, import_react5.useMemo)(() => /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_react_router_dom.Routes, { children: routes.map((route, index) => /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_react_router_dom.Route, { errorElement: /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_react_router_dom.Navigate, { to: { pathname: "/error" } }), ...route }, index)) }), [routes]);
-  return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(RouteContext.Provider, { value: {
-    renderedRoutes,
-    navigate,
-    currentLocation,
-    getRouteParams
-  }, children });
-};
-var useRoute = () => (0, import_react5.useContext)(RouteContext);
 
 // src/useTranslate/index.tsx
 var import_react_i18next = require("react-i18next");
 var import_i18next_browser_languagedetector = __toESM(require("i18next-browser-languagedetector"), 1);
 var import_i18next = __toESM(require("i18next"), 1);
 var import_react_i18next2 = require("react-i18next");
-var import_jsx_runtime5 = require("react/jsx-runtime");
+var import_jsx_runtime4 = require("react/jsx-runtime");
 var TranslateProvider = ({ children, resources, lng = "zh" }) => {
   import_i18next.default.use(import_i18next_browser_languagedetector.default).use(import_react_i18next.initReactI18next).init({
     resources,
@@ -274,8 +231,64 @@ var TranslateProvider = ({ children, resources, lng = "zh" }) => {
       escapeValue: false
     }
   });
-  return /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(import_react_i18next.I18nextProvider, { i18n: import_i18next.default, children });
+  return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(import_react_i18next.I18nextProvider, { i18n: import_i18next.default, children });
 };
+
+// src/useRoute/index.tsx
+var import_jsx_runtime5 = require("react/jsx-runtime");
+var RouteContext = (0, import_react5.createContext)({
+  renderedRoutes: null,
+  navigate: () => {
+  },
+  currentLocation: {},
+  getRouteParams: () => ({})
+});
+var RouteProvider = (props) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(import_react_router_dom.BrowserRouter, { children: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(RouteProviderCore, { ...props }) });
+var RouteProviderCore = ({ routes, children }) => {
+  const { pathname, state } = (0, import_react_router_dom.useLocation)();
+  const __navigate = (0, import_react_router_dom.useNavigate)();
+  const { hasPermission } = usePermission();
+  const { t } = (0, import_react_i18next.useTranslation)();
+  const findRouteItemByPathName = (0, import_react5.useCallback)((targetPath) => routes.find(({ path }) => new RegExp(`^${path?.replace(/:\w+/g, "(\\w+)")}$`).test(targetPath)), [routes, __navigate]);
+  const navigate = (0, import_react5.useCallback)((props) => {
+    if (typeof props === "number") __navigate(props);
+    else {
+      const { pathname: pathname2, ...restPathFields } = props;
+      const targetRouteItem = findRouteItemByPathName(pathname2);
+      if (!targetRouteItem) return;
+      const { permissionRequire } = targetRouteItem;
+      const { status, permissionsDeny } = hasPermission(permissionRequire);
+      if (status) __navigate({ pathname: pathname2, ...restPathFields });
+      else __navigate({ pathname: "error" }, {
+        state: {
+          title: t("Permission deny"),
+          content: `${t("Required permission(s)")}: ${permissionsDeny.join(", ")}`
+        }
+      });
+    }
+  }, [findRouteItemByPathName, hasPermission, __navigate, t]);
+  const currentLocation = (0, import_react5.useMemo)(() => findRouteItemByPathName(pathname) || {}, [pathname, findRouteItemByPathName]);
+  const getRouteParams = (0, import_react5.useCallback)(() => state, []);
+  const renderedRoutes = (0, import_react5.useMemo)(() => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(import_react_router_dom.Routes, { children: routes.map((route, index) => /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(import_react_router_dom.Route, { errorElement: /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(import_react_router_dom.Navigate, { to: { pathname: "/error" } }), ...route }, index)) }), [routes]);
+  (0, import_react5.useEffect)(() => {
+    if (!findRouteItemByPathName(pathname)) __navigate(
+      { pathname: "error" },
+      {
+        state: {
+          title: t("404 page not found"),
+          content: t(`This site doesn't have this route!`)
+        }
+      }
+    );
+  }, [pathname, findRouteItemByPathName]);
+  return /* @__PURE__ */ (0, import_jsx_runtime5.jsx)(RouteContext.Provider, { value: {
+    renderedRoutes,
+    navigate,
+    currentLocation,
+    getRouteParams
+  }, children });
+};
+var useRoute = () => (0, import_react5.useContext)(RouteContext);
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
   GlobalProvider,

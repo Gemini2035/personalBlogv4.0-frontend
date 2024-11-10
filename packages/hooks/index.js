@@ -169,58 +169,15 @@ var PermissionProvider = ({ token, children, fallback }) => {
 var usePermission = () => useContext2(PermissionContext);
 
 // src/useRoute/index.tsx
-import { createContext as createContext3, useCallback as useCallback2, useContext as useContext3, useMemo as useMemo2 } from "react";
+import { createContext as createContext3, useCallback as useCallback2, useContext as useContext3, useEffect as useEffect2, useMemo as useMemo2 } from "react";
 import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import { jsx as jsx3 } from "react/jsx-runtime";
-var RouteContext = createContext3({
-  renderedRoutes: null,
-  navigate: () => {
-  },
-  currentLocation: {},
-  getRouteParams: () => ({})
-});
-var RouteProvider = (props) => /* @__PURE__ */ jsx3(BrowserRouter, { children: /* @__PURE__ */ jsx3(RouteProviderCore, { ...props }) });
-var RouteProviderCore = ({ routes, children }) => {
-  const { pathname, state } = useLocation();
-  const __navigate = useNavigate();
-  const { hasPermission } = usePermission();
-  const findRouteItemByPathName = useCallback2((targetPath) => {
-    const result = routes.find(({ path }) => new RegExp(`^${path?.replace(/:\w+/g, "(\\w+)")}$`).test(targetPath));
-    if (!result) {
-      __navigate({ pathname: "error" });
-      return {};
-    }
-    return result;
-  }, [routes, __navigate]);
-  const navigate = useCallback2((props) => {
-    if (typeof props === "number") __navigate(props);
-    else {
-      const { pathname: pathname2, ...restPathFields } = props;
-      const targetRouteItem = findRouteItemByPathName(pathname2);
-      const { permissionRequire } = targetRouteItem;
-      const { status } = hasPermission(permissionRequire);
-      if (status) __navigate({ pathname: pathname2, ...restPathFields });
-      else __navigate({ pathname: "error" });
-    }
-  }, [findRouteItemByPathName, hasPermission, __navigate]);
-  const currentLocation = useMemo2(() => findRouteItemByPathName(pathname) || {}, [pathname, findRouteItemByPathName]);
-  const getRouteParams = useCallback2(() => state, []);
-  const renderedRoutes = useMemo2(() => /* @__PURE__ */ jsx3(Routes, { children: routes.map((route, index) => /* @__PURE__ */ jsx3(Route, { errorElement: /* @__PURE__ */ jsx3(Navigate, { to: { pathname: "/error" } }), ...route }, index)) }), [routes]);
-  return /* @__PURE__ */ jsx3(RouteContext.Provider, { value: {
-    renderedRoutes,
-    navigate,
-    currentLocation,
-    getRouteParams
-  }, children });
-};
-var useRoute = () => useContext3(RouteContext);
 
 // src/useTranslate/index.tsx
 import { I18nextProvider, initReactI18next, useTranslation } from "react-i18next";
 import LanguageDetector from "i18next-browser-languagedetector";
 import i18n from "i18next";
 import { Trans } from "react-i18next";
-import { jsx as jsx4 } from "react/jsx-runtime";
+import { jsx as jsx3 } from "react/jsx-runtime";
 var TranslateProvider = ({ children, resources, lng = "zh" }) => {
   i18n.use(LanguageDetector).use(initReactI18next).init({
     resources,
@@ -230,8 +187,64 @@ var TranslateProvider = ({ children, resources, lng = "zh" }) => {
       escapeValue: false
     }
   });
-  return /* @__PURE__ */ jsx4(I18nextProvider, { i18n, children });
+  return /* @__PURE__ */ jsx3(I18nextProvider, { i18n, children });
 };
+
+// src/useRoute/index.tsx
+import { jsx as jsx4 } from "react/jsx-runtime";
+var RouteContext = createContext3({
+  renderedRoutes: null,
+  navigate: () => {
+  },
+  currentLocation: {},
+  getRouteParams: () => ({})
+});
+var RouteProvider = (props) => /* @__PURE__ */ jsx4(BrowserRouter, { children: /* @__PURE__ */ jsx4(RouteProviderCore, { ...props }) });
+var RouteProviderCore = ({ routes, children }) => {
+  const { pathname, state } = useLocation();
+  const __navigate = useNavigate();
+  const { hasPermission } = usePermission();
+  const { t } = useTranslation();
+  const findRouteItemByPathName = useCallback2((targetPath) => routes.find(({ path }) => new RegExp(`^${path?.replace(/:\w+/g, "(\\w+)")}$`).test(targetPath)), [routes, __navigate]);
+  const navigate = useCallback2((props) => {
+    if (typeof props === "number") __navigate(props);
+    else {
+      const { pathname: pathname2, ...restPathFields } = props;
+      const targetRouteItem = findRouteItemByPathName(pathname2);
+      if (!targetRouteItem) return;
+      const { permissionRequire } = targetRouteItem;
+      const { status, permissionsDeny } = hasPermission(permissionRequire);
+      if (status) __navigate({ pathname: pathname2, ...restPathFields });
+      else __navigate({ pathname: "error" }, {
+        state: {
+          title: t("Permission deny"),
+          content: `${t("Required permission(s)")}: ${permissionsDeny.join(", ")}`
+        }
+      });
+    }
+  }, [findRouteItemByPathName, hasPermission, __navigate, t]);
+  const currentLocation = useMemo2(() => findRouteItemByPathName(pathname) || {}, [pathname, findRouteItemByPathName]);
+  const getRouteParams = useCallback2(() => state, []);
+  const renderedRoutes = useMemo2(() => /* @__PURE__ */ jsx4(Routes, { children: routes.map((route, index) => /* @__PURE__ */ jsx4(Route, { errorElement: /* @__PURE__ */ jsx4(Navigate, { to: { pathname: "/error" } }), ...route }, index)) }), [routes]);
+  useEffect2(() => {
+    if (!findRouteItemByPathName(pathname)) __navigate(
+      { pathname: "error" },
+      {
+        state: {
+          title: t("404 page not found"),
+          content: t(`This site doesn't have this route!`)
+        }
+      }
+    );
+  }, [pathname, findRouteItemByPathName]);
+  return /* @__PURE__ */ jsx4(RouteContext.Provider, { value: {
+    renderedRoutes,
+    navigate,
+    currentLocation,
+    getRouteParams
+  }, children });
+};
+var useRoute = () => useContext3(RouteContext);
 export {
   GlobalProvider,
   PermissionProvider,
