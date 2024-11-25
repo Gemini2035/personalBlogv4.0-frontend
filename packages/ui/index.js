@@ -66,7 +66,13 @@ var generateGap = (gap) => {
       default:
         return DEFAULT_GAP;
     }
-  } else return gap ? gap + "px" : DEFAULT_GAP;
+  } else {
+    try {
+      return Number(gap) + "px";
+    } catch {
+      return DEFAULT_GAP;
+    }
+  }
 };
 var StyledFlex = styled2.div.withConfig({
   shouldForwardProp: (prop) => isPropValid(prop)

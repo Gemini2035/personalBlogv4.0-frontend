@@ -16,15 +16,21 @@ const generateGap = (gap: StyledFlexProps['gap']) => {
             default:
                 return DEFAULT_GAP;
         }
-    } else return gap ? (gap + 'px') : DEFAULT_GAP
+    } else {
+        try {
+            return Number(gap) + 'px'
+        } catch {
+            return DEFAULT_GAP
+        }
+    }
 }
 
 export const StyledFlex = styled.div.withConfig({
     shouldForwardProp: (prop) => isPropValid(prop)
-  })<StyledFlexProps>`
+}) <StyledFlexProps>`
     display: flex;
     flex-direction: ${({ verticle }) => verticle ? 'column' : 'row'};
     align-items: ${({ align }) => align};
     justify-content: ${({ justify }) => justify};
-    gap: ${({gap}) => generateGap(gap)}
+    gap: ${({ gap }) => generateGap(gap)}
 `

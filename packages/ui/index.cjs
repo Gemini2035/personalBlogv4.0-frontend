@@ -105,7 +105,13 @@ var generateGap = (gap) => {
       default:
         return DEFAULT_GAP;
     }
-  } else return gap ? gap + "px" : DEFAULT_GAP;
+  } else {
+    try {
+      return Number(gap) + "px";
+    } catch {
+      return DEFAULT_GAP;
+    }
+  }
 };
 var StyledFlex = import_styled_components3.default.div.withConfig({
   shouldForwardProp: (prop) => (0, import_is_prop_valid.default)(prop)
