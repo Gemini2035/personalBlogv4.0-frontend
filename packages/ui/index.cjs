@@ -118,8 +118,8 @@ var StyledFlex = import_styled_components3.default.div.withConfig({
 })`
     display: flex;
     flex-direction: ${({ verticle }) => verticle ? "column" : "row"};
-    align-items: ${({ align }) => align};
-    justify-content: ${({ justify }) => justify};
+    align-items: ${({ align }) => align ?? "stretch"};
+    justify-content: ${({ justify }) => justify ?? "stretch"};
     gap: ${({ gap }) => generateGap(gap)}
 `;
 
