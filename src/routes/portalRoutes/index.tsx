@@ -5,6 +5,7 @@ export const portalRoutes: BlogRouteItem[] = [
     {
         id: 'portalHome',
         path: '/',
-        element: <PortalHome />
+        element: <PortalHome />,
+        frameType: "portal",
     }
 ]
