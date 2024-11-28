@@ -30,6 +30,8 @@ var __toCommonJS = (mod) => __copyProps(__defProp({}, "__esModule", { value: tru
 // src/index.ts
 var src_exports = {};
 __export(src_exports, {
+  Card: () => import_core.Card,
+  CardElevation: () => import_core.Elevation,
   Flex: () => Flex,
   Img: () => Img,
   Text: () => Text,
@@ -140,8 +142,14 @@ var import_jsx_runtime4 = require("react/jsx-runtime");
 var Img = (props) => {
   return /* @__PURE__ */ (0, import_jsx_runtime4.jsx)(StyledImg, { ...props });
 };
+
+// src/Card/index.tsx
+var import_blueprint = require("@blueprintjs/core/lib/css/blueprint.css");
+var import_core = require("@blueprintjs/core");
 // Annotate the CommonJS export names for ESM import in node:
 0 && (module.exports = {
+  Card,
+  CardElevation,
   Flex,
   Img,
   Text,

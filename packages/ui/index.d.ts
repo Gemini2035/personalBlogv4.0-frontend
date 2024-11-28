@@ -1,6 +1,7 @@
 import { DefaultTheme, CSSProperties as CSSProperties$1 } from 'styled-components';
 export { default as styled } from 'styled-components';
 import { ReactNode, Dispatch, SetStateAction, CSSProperties, FC, ImgHTMLAttributes } from 'react';
+export { Card, Elevation as CardElevation, CardProps } from '@blueprintjs/core';
 
 type DefaultThemesType = {
     light: DefaultTheme;

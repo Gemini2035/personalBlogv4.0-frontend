@@ -101,7 +101,13 @@ import { jsx as jsx4 } from "react/jsx-runtime";
 var Img = (props) => {
   return /* @__PURE__ */ jsx4(StyledImg, { ...props });
 };
+
+// src/Card/index.tsx
+import "@blueprintjs/core/lib/css/blueprint.css";
+import { Elevation, Card } from "@blueprintjs/core";
 export {
+  Card,
+  Elevation as CardElevation,
   Flex,
   Img,
   Text,

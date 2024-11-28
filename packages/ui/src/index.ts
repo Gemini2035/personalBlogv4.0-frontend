@@ -4,5 +4,6 @@ export * from './ThemeProvider'
 export * from './Text'
 export * from './Flex'
 export * from './Img'
+export * from './Card'
 
 export { styled } 
